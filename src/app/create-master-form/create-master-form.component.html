@@ -1,0 +1,93 @@
+<div class="">
+    <div style="border-bottom: 4px solid rgb(0, 24, 37);height:50px;">
+        <button class="btn border-0 mt-1 d-flex" (click)="back()" type="button"><i class="fa-solid fa-circle-arrow-left mt-1"
+                style="font-size:22px"></i> &nbsp;
+                <b class="fs-5" *ngIf="datavalidate(ATTR_REF_ID)==''">Create New Master Form</b>
+                <b class="fs-5"  *ngIf="datavalidate(ATTR_REF_ID)!=''">{{ATTR_NAME}}</b>
+            </button>
+    </div>
+
+
+    <form [formGroup]="engineModelForm" class="scrolling">
+        <div class="container-fluid px-4">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label><b>Attribute Name</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
+                        <input type="text" class="form-control" formControlName="ATTR_NAME" [attr.disabled]="disUpdate||null" maxlength="1000"
+                            placeholder="Enter Attribute Name" [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('ATTR_NAME')?.invalid}" >
+                    </div>
+                    <div class="col-lg-3">
+                        <label><b>Attribute Description</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
+                        <input type="text" class="form-control" formControlName="ATTR_DESC" [attr.disabled]="disUpdate||null" maxlength="1000"
+                            placeholder="Enter Attribute Description" [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('ATTR_DESC')?.invalid}">
+                    </div>
+
+                    <div class="col-lg-3">
+                        <label><b>Attribute characteristics</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
+                        <select class="form-select" formControlName="ATTR_CHARACTERISTICS" [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('ATTR_CHARACTERISTICS')?.invalid}" 
+                        [attr.disabled]="disUpdate||null" (change)="AttrCharSelect($event)">
+                            <option value=null>Select Attribute characteristics</option>
+                            <option [value]="item.LOV_ID" *ngFor="let item of AttributeChar">{{item.LOV_DESC}}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <label><b>Document Name</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
+                        <select class="form-select" formControlName="DOUMENT_NAME" [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('DOUMENT_NAME')?.invalid}" (change)="docDropSelect($event)" [attr.disabled]="disUpdate||null">
+                            <option value=null>Select Document Name</option>
+                            <option [value]="item.REPORT_NAME" *ngFor="let item of docNameDropArr">{{item.REPORT_NAME}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-lg-2">
+                        <label for="usr"><b>Mandatory</b><sup><b>*</b></sup></label>
+                        <div>
+                            <input type="radio" id="rootValue" value="Yes" formControlName="MANDATORY" [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('MANDATORY')?.invalid}"
+                                class="form-check-input mt-2" [attr.disabled]="this.engineModelForm.controls['ATTR_CHARACTERISTICS'].value=='Sub_Group'||null"/> Yes
+                            <input type="radio" id="rootValue" style="margin-left: 15px;" value="No" formControlName="MANDATORY" [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('MANDATORY')?.invalid}"
+                                class="form-check-input mt-2" />
+                                <label style="padding: 7px;">No</label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <label for="usr"><b>Visible To User</b><sup><b>*</b></sup></label>
+                        <div>
+                            <input type="radio" id="rootValue" value="Yes" formControlName="VISIBLE" [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('VISIBLE')?.invalid}"
+                                class="form-check-input mt-2" /><label
+                                style="padding: 7px;">Yes</label>
+                            <input type="radio" id="rootValue" style="margin-left: 15px;" value="No" formControlName="VISIBLE" [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('VISIBLE')?.invalid}"
+                                class="form-check-input  mt-2" /><label
+                                style="padding: 7px;">No</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="usr"><b>Highlight</b><sup><b>*</b></sup></label>
+                        <div>
+                            <input type="radio" id="Highlite" value="Yes" formControlName="Highlite" [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('Highlite')?.invalid}"
+                                class="form-check-input mt-2" /><label
+                                style="padding: 7px;">Yes</label>
+                            <input type="radio" id="Highlite" style="margin-left: 15px;" value="No" formControlName="Highlite" [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('Highlite')?.invalid}"
+                                class="form-check-input  mt-2" /><label
+                                style="padding: 7px;">No</label>
+                        </div>
+                    </div>
+                    <!-- <div class="col-lg-4 mt-4">
+                        <button class="btn rounded-0 float-end mx-1" style="background:rgb(4, 111, 141);color:white;" (click)="save()"><i class="fa-solid fa-file-pen"></i>&nbsp;&nbsp;add Master Attributes</button>
+                        <button class="btnrounded-0 float-end mx-1" style="border:1px solid rgb(4, 111, 141);background-color:white;padding: 6px 20px 6px 20px;color:rgb(4, 111, 141)" (click)="clear()">
+                            <i style="color:rgb(4, 111, 141)" class="fa-solid fa-ban"></i>&nbsp;&nbsp;Clear</button>
+                    </div> -->
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+<div class="common_modal" *ngIf="call_modal">
+    <app-common-modal [data_display]="data_send"></app-common-modal>
+</div>

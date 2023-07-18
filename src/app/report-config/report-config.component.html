@@ -1,0 +1,106 @@
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width:'30vw'}" [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-raised p-button-info" acceptButtonStyleClass="p-button-raised"></p-confirmDialog>
+<div class="scrolling" #tableBody>
+    <div class="mx-4" style="top:0;position:sticky;background:white;z-index:10;">
+        <div *ngIf="clickView">
+            <button class="btn border-0 d-flex" style="padding-top:0px;margin-left:-12px;" type="button"
+                (click)="back()"><i class="fa-solid fa-circle-arrow-left mt-1" style="font-size:22px;"></i>
+                &nbsp;&nbsp;<b class="fs-5">{{reportName}}</b>
+            </button>
+        </div>
+        <table class="table table-bordered" style="width: 600px;" *ngIf="!clickView">
+            <thead>
+                <tr style="background-color:#ddd;">
+                    <th style="width:25px">S.No</th>
+                    <th style="width: 150px;">Document Name</th>
+                    <th style="width:200px">Version</th>
+                </tr>
+            </thead>
+            <thead>
+                <tr *ngFor="let obj of docNameDropArr;let i=index">
+                    <td class="text-center">{{i+1}}</td>
+                    <td style="cursor:pointer;color:blue;text-decoration:underline;" (click)="clickToView(obj)">
+                        {{obj.REPORT_NAME}}</td>
+                    <td>{{obj.REPORT_VERSION}}</td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="mx-4" *ngIf="clickView">
+        <p-accordion class="accordHeight">
+            <p-accordionTab header={{reportName}} [selected]="true">
+                <div class="">
+  
+                    <table class="table table-bordered tableStyle" style="width:1000px;">
+                        <tbody cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListData]="tableArr" class="scrolling1">
+                            <tr [ngClass]="{'thead':!(datavalidate(data.REPORT_CONFIG_REF_ID)==''),'greyColor':(i==clickedRow) && 
+                                !(data.REPORT_CONFIG_REF_ID==null) && !(reportStatus=='1'),'bold':datavalidate(data.ATTR_HIGHLIGHT)=='Yes'}"
+                                cdkDragHandle cdkDrag cdkDragLockAxis="y" [cdkDragDisabled]="isDraggingEnabled(data)"
+                                *ngFor="let data of tableArr;let i=index" (click)="repRowClick(data)"
+                                vsDragScroll (cdkDragStarted)="dragStart($event)">
+                                <td style="width:50px" *ngIf="reportStatus != '1'"><input type="checkbox"
+                                        class="form-check-input" [disabled]="reportStatus=='1'"
+                                        *ngIf="data.REPORT_CONFIG_REF_ID==null" [(ngModel)]="data.isChecked"
+                                        (change)="reportSelected(data)"></td>
+                                <td style="width:60px;background: white;"><b><input type="text" class="ipStyle"
+                                            [class.bold]="datavalidate(data.ATTR_HIGHLIGHT)=='Yes'"
+                                            [(ngModel)]="data.REPORT_ATTR_ID" [disabled]="disRepId(data)">
+                                    </b></td>
+                                <td style="width:40vw;">{{data.ATTR_NAME}}</td>
+                                <td style="width:55vw;">{{data.REPORT_ATTR_DESC}} </td>
+                                <td>
+                                    <button class="addRow" (click)="deleteRepRow(data);" type="button"
+                                        style="margin-left:0px;"
+                                        *ngIf="!(reportStatus=='1') && data.REPORT_CONFIG_REF_ID!=null">
+                                        <i class="fa-solid fa-trash" style="color:red"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </p-accordionTab>
+        </p-accordion>
+    </div>
+</div>
+
+<div class="modal modal-cus shadow" tabindex="-1" role="dialog" [ngStyle]="{'display':AAHPopup}">
+    <div class="modal-dialog modal-dialog-centered border-0 modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex p-0" style="background-color:rgb(1, 64, 82);color:white;height:40px;">
+                <h5 style="margin-left:20px;" class="mb-0">Revision</h5>
+                <button style="padding: 0px 15px;font-size:25px;border-radius:10px;" type="button"
+                    class="popup-close justify-content-end" (click)="closeRevision()">X</button>
+            </div>
+            <div class="modal-body shadow">
+                <!-- <div class="row"> -->
+                <div class="row">
+                    <div class="col-sm-3"><b>Version :</b></div>
+                    <div class="col-sm-9"><input type="text" class="form-control" [(ngModel)]="Version" maxlength="20"
+                            [ngClass]="{'borderRed':reviseSubmitted&&(isValidReviseStr=='true')}"
+                            (input)="callVersion()">
+                        <span *ngIf="reviseSubmitted&&(isValidReviseStr=='true')" style="color: red;">Version name
+                            already used!</span>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-3"><b>Remarks :</b></div>
+                    <div class="col-sm-9">
+                        <textarea type="text" rows="3" class="form-control" [(ngModel)]="Remarks"
+                            maxlength="1000"></textarea>
+                    </div>
+                </div>
+                <!-- </div> -->
+                <div class="col-lg-12 mt-3">
+                    <button class="btn btn-secondary rounded-0 float-end" style="background:#142128" type="button"
+                        (click)="revisionSubmit()" [disabled]="spinner"><i class="fa-solid fa-paper-plane"></i>&nbsp;&nbsp;Submit</button>
+                    <button class="btn btn-light rounded-0 float-end mx-2" style="border:1px solid black" type="button"
+                        (click)="revisionClear()"><i class="fa-solid fa-ban"></i>&nbsp;&nbsp;Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="common_modal" *ngIf="call_modal">
+    <app-common-modal [data_display]="data_send"></app-common-modal>
+</div>

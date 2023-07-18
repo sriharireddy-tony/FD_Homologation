@@ -1,0 +1,40 @@
+<div class="container-fluid px-4 scrolling" >
+    <div class="col-lg-12 mt-2">
+        <div class="">
+            <table class="table table-bordered">
+                <thead >
+                    <tr style="background-color: rgb(4, 111, 141);color:white">
+                        <th style="width:25px;">S.No</th>
+                        <th style="width:120px;text-align:center;">Request ID</th>
+                        <th>Family of Engines</th>
+                        <!-- <th>Engine Model</th> -->
+                        <th>Initiated On</th>
+                        <th>Revision</th>
+                        <th>ARAI Request NO.</th>
+                        <th>APEX No.</th>
+                        <th>Completed On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of completedData | paginate: pagination; let i=index">
+                        <td style="text-align:center;">{{i+1}}</td>
+                        <td style="cursor:pointer;color:blue;text-decoration:underline;text-align:center;" (click)="clickToView(item.HR_REF_NO)">{{item.REQUEST_NO}}</td>
+                        <td>{{item.ENGINE_FAMILY_NO}}</td>
+                        <!-- <td>{{item.id}}</td> -->
+                        <td>{{item.INITIATION_DATE}}</td>
+                        <td>{{item.REVISION}}</td>
+                        <td>{{item.ARAI_NO}}</td>
+                        <td>{{item.APEX_NO}}</td>
+                        <td>{{item.COMPLETION_DATE}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="9" class="tdPagination">
+                            <pagination-controls style="height:25px;float: right;" class="pagination" (pageChange)="handlePageChange($event)"></pagination-controls>
+                            <p style="height:10px;float: right;margin-top: 4px;">Number of Records: <b>{{completedData.length}}</b></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

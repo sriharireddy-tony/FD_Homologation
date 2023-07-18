@@ -1,0 +1,105 @@
+<div style="border-bottom: 4px solid rgb(0, 24, 37);height: 50px;">
+    <button class="btn border-0 d-flex" (click)="back()" type="button"><i class="fa-solid fa-circle-arrow-left mt-1"
+            style="font-size:22px"></i> &nbsp;
+        <b class="fs-5" *ngIf="REF_ID==undefined">Create New Family Of Engines</b>
+        <b class="fs-5" *ngIf="REF_ID!=undefined">{{ENGINE_FAMILY_NO}}</b>
+    </button>
+</div>
+
+<form [formGroup]="engineFamilyForm" class="scrolling">
+    <div class="container-fluid">
+        <div class="col-lg-12 mt-4">
+            <div class="row">
+                <div class="col-lg-3">
+                    <label><b>Engine Platform</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
+                    <div [ngClass]="{'border12':isSubmitted && engineFamilyForm.get('PLATFORM')?.invalid}">
+                        <p-multiSelect [options]="enginePlatform" formControlName="PLATFORM" defaultLabel="Select Engine Platform" 
+                        optionLabel="LOV_DESC" (onChange)="selectPlatform($event)"></p-multiSelect>
+                    </div>
+                    <!-- <select class="form-select" formControlName="PLATFORM"
+                        [ngClass]="{'borderRed':isSubmitted && engineFamilyForm.get('PLATFORM')?.invalid}"
+                        [attr.disabled]="disUpdate||null">
+                        <option value=''>Select Engine Platform</option>
+                        <option [value]="item.LOV_ID" *ngFor="let item of enginePlatform">{{item.LOV_DESC}}</option>
+                    </select> -->
+                </div>
+                <div class="col-lg-3">
+                    <label><b>Engine Volume</b><sup><b>*</b></sup></label>
+                    <select class="form-select" formControlName="VOLUME"
+                        [ngClass]="{'borderRed':isSubmitted && engineFamilyForm.get('VOLUME')?.invalid}">
+                        <option value=''>Select Engine Volume</option>
+                        <option [value]="item.LOV_ID" *ngFor="let item of engineVolume">{{item.LOV_DESC}}</option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <label><b>Rated Power</b><sup><b>*</b></sup></label>
+                    <input type="text" class="form-control" placeholder="Please Enter Rated Power"
+                        formControlName="RATED_POWER" appdigitOnly
+                        [ngClass]="{'borderRed':isSubmitted && engineFamilyForm.get('RATED_POWER')?.invalid}">
+                    <!-- <select class="form-select" formControlName="RATED_POWER" [ngClass]="{'borderRed':isSubmitted && engineFamilyForm.get('RATED_POWER')?.invalid}">
+                <option value=''>Select Rated Power</option>
+                <option [value]="item.LOV_ID" *ngFor="let item of enginePower">{{item.LOV_DESC}}</option>
+            </select> -->
+                </div>
+                <div class="col-lg-3">
+                    <label><b>Rated Speed</b><sup><b>*</b></sup></label>
+                    <input type="text" class="form-control" placeholder="Please Enter Rated Speed"
+                        formControlName="RATED_SPEED" maxlength="4" appNumbers
+                        [ngClass]="{'borderRed':isSubmitted && engineFamilyForm.get('RATED_SPEED')?.invalid}">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 mt-4">
+            <div class="row">
+                <div class="col-lg-3">
+                    <label><b>Aspiration Type</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
+                    <select class="form-select" formControlName="ASPIRATION_TYPE"
+                        [ngClass]="{'borderRed':isSubmitted && engineFamilyForm.get('ASPIRATION_TYPE')?.invalid}"
+                        [attr.disabled]="disUpdate||null">
+                        <option value=''>Select Aspiration Type</option>
+                        <option [value]="item.LOV_ID" *ngFor="let item of engineAspiration">{{item.LOV_DESC}}</option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <label><b>FIE Used</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
+                    <select class="form-select" formControlName="FIE_USED"
+                        [ngClass]="{'borderRed':isSubmitted && engineFamilyForm.get('FIE_USED')?.invalid}"
+                        [attr.disabled]="disUpdate||null">
+                        <option value=''>Select FIE Used</option>
+                        <option [value]="item.LOV_ID" *ngFor="let item of engineFIE">{{item.LOV_DESC}}</option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <label><b>EATS Used</b></label>
+                    <select class="form-select" formControlName="EATS_USED">
+                        <option value=''>Select EATS Used</option>
+                        <option [value]="item.LOV_ID" *ngFor="let item of engineEATS">{{item.LOV_DESC}}</option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <label><b>Emission Compliance</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
+                    <select class="form-select" formControlName="EMISSION_COMPLIANCE"
+                        [ngClass]="{'borderRed':isSubmitted && engineFamilyForm.get('EMISSION_COMPLIANCE')?.invalid}"
+                        [attr.disabled]="disUpdate||null">
+                        <option value=''>Select Emission Compliance</option>
+                        <option [value]="item.LOV_ID" *ngFor="let item of engineEmission">{{item.LOV_DESC}}</option>
+                    </select>
+                </div>
+             </div>
+        </div>
+        <div class="col-lg-12 mt-4">
+            <div class="row">
+                <div class="col-lg-6">
+                    <label><b>Remarks</b><sup><b>*</b></sup></label>
+                    <textarea class="form-control" formControlName="ENGINE_REMARKS" maxlength="1000"
+                        [ngClass]="{'borderRed':isSubmitted && engineFamilyForm.get('ENGINE_REMARKS')?.invalid}"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+               
+
+<div class="common_modal" *ngIf="call_modal">
+    <app-common-modal [data_display]="data_send"></app-common-modal>
+</div>

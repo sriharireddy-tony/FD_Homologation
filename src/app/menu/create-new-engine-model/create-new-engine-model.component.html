@@ -1,0 +1,136 @@
+<div style="border-bottom: 4px solid rgb(0, 24, 37);height: 50px;">
+    <button class="btn border-0 d-flex" (click)="back()" type="button"><i class="fa-solid fa-circle-arrow-left mt-1"
+            style="font-size:22px"></i> &nbsp;
+        <b class="fs-5" *ngIf="REF_ID==undefined">Create New Engine Model</b>
+        <b class="fs-5" *ngIf="REF_ID!=undefined">{{ENGINE_MODEL_NO}}</b>
+    </button>
+</div>
+
+<div class="main__div">
+    <form [formGroup]="engineModelForm" class="scrolling">
+        <div class="container-fluid mt-4">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label><b>Application Type</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
+                        <select class="form-select" formControlName="APPLICATION_TYPE"
+                            [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('APPLICATION_TYPE')?.invalid}"
+                            [attr.disabled]="disUpdate||null">
+                            <option value=''>Select Application Type</option>
+                            <option [value]="item.LOV_ID" *ngFor="let item of engineApplication">{{item.LOV_DESC}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label><b>Link Engine Family</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
+                        <select class="form-select" formControlName="ENGINE_FAMILY_NO"
+                            [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('ENGINE_FAMILY_NO')?.invalid}"
+                            (change)="getEngFamilyDetails($event)" [attr.disabled]="disUpdate||null">
+                            <option value=''>Select Link Engine Family</option>
+                            <option [value]="item.RefNo" *ngFor="let item of ENGINE_FAMILY_NO_Arr">
+                                {{item.engineFamilyNo}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label><b>Platform Name</b></label>
+                        <!-- <input type="text" class="form-control" formControlName="PLATFORM" [attr.disabled]="true"> -->
+                        <select class="form-select" formControlName="PLATFORM"
+                            [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('PLATFORM')?.invalid}"
+                            [attr.disabled]="disUpdate||null">
+                            <option value=''>Select Platform Name</option>
+                            <option [value]="item.LOV_ID" *ngFor="let item of enginePlatform">{{item.LOV_DESC}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label><b>FIE</b></label>
+                        <!-- <input type="text" class="form-control" formControlName="FIE" [attr.disabled]="true"> -->
+                        <select class="form-select" formControlName="FIE"
+                            [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('FIE')?.invalid}"
+                            [attr.disabled]="true">
+                            <option value=''>Select FIE</option>
+                            <option [value]="item.LOV_ID" *ngFor="let item of engineFIE">{{item.LOV_DESC}}</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-12 mt-4">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label><b>Engine Displacement</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
+                        <select class="form-select" formControlName="DISPLACEMENT_L"
+                            [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('DISPLACEMENT_L')?.invalid}"
+                            [attr.disabled]="disUpdate||null">
+                            <option value=''>Select Engine Displacement</option>
+                            <option [value]="item.LOV_ID" *ngFor="let item of engineVolume">{{item.LOV_DESC}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label><b>Aspiration Type</b></label>
+                        <!-- <input class="form-control" type="text" formControlName="ASPIRATION_TYPE" [attr.disabled]="true"> -->
+                        <select class="form-select" formControlName="ASPIRATION_TYPE"
+                            [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('ASPIRATION_TYPE')?.invalid}"
+                            [attr.disabled]="true">
+                            <option value=''>Select Aspiration Type</option>
+                            <option [value]="item.LOV_ID" *ngFor="let item of engineAspiration">{{item.LOV_DESC}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label><b>Engine Power (In Hp)</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
+                        <input type="text" class="form-control" formControlName="POWER_HP"
+                            placeholder="Please enter Power" maxlength="9" appdigitOnly
+                            [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('POWER_HP')?.invalid}"
+                            [attr.disabled]="disUpdate||null">
+                    </div>
+                    <div class="col-lg-3">
+                        <label><b>Emission Compliance</b></label>
+                        <select class="form-select" formControlName="EMISSION_COMPLIANCE" [attr.disabled]="true">
+                            <option value=''>Select Emission Compliance</option>
+                            <option [value]="item.LOV_ID" *ngFor="let item of engineEmission">{{item.LOV_DESC}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 mt-4">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label><b>Variant Engine</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
+                        <select class="form-select" formControlName="VARIANT" [attr.disabled]="disUpdate||null"
+                            [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('VARIANT')?.invalid}">
+                            <option value=''>Select Variant Engine</option>
+                            <option [value]="item.LOV_DESC" [disabled]="disDropOption(item.LOV_DESC)"
+                                *ngFor="let item of engineVarient">{{item.LOV_DESC}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label><b>Mahindra/GrowMax</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
+                        <select class="form-select" formControlName="MG" [attr.disabled]="disUpdate||null"
+                            [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('MG')?.invalid}">
+                            <option value="">Select Mahindra/GrowMax</option>
+                            <option [value]="obj.LOV_ID" *ngFor="let obj of company">{{obj.LOV_DESC}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label><b>Additional Information</b></label>
+                        <select class="form-select" formControlName="addiInform" [attr.disabled]="disUpdate||null">
+                            <option value="">Select Additional Information</option>
+                            <option [value]="item.LOV_ID" *ngFor="let item of addiInfo" [disabled]="addInformFunc(item.LOV_ID)">{{item.LOV_DESC}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label><b>Remarks</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
+                        <textarea class="form-control" formControlName="REMARKS" rows="3" [attr.disabled]="disUpdate||null" maxlength="1000"
+                            [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('REMARKS')?.invalid}"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="common_modal" *ngIf="call_modal">
+    <app-common-modal [data_display]="data_send"></app-common-modal>
+</div>

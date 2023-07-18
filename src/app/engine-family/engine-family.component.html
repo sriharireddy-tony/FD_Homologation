@@ -1,0 +1,45 @@
+<div class="container-fluid px-4 scrolling" >
+    <div class="col-lg-12">
+        <div class="">
+            <table class="table table-bordered">
+                <thead >
+                    <tr style="background-color: rgb(4, 111, 141);color:white">
+                        <th class="SNoWidth">S.No</th>
+                        <th style="width: 150px;">Engine Family No.</th>
+                        <th>Engine Platform</th>
+                        <th>Engine Volume</th>
+                        <th>Rated Power</th>
+                        <th>Rated Speed</th>
+                        <th>Aspiration Type</th>
+                        <th>Created By</th>
+                        <th class="dateWidth">Created On</th>
+                        <th>Updated By</th>
+                        <th class="dateWidth">Updated On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of engineFamilyDetails | paginate: { itemsPerPage: 10, currentPage: page }; let i=index">
+                        <td class="SNoWidth">{{i+1}}</td>
+                        <td style="cursor:pointer;color:blue;text-decoration:underline;text-align:center;" (click)="clickToView(item.ENGINE_F_REF_ID)">{{item.ENGINE_FAMILY_NO}}</td>
+                        <td style="text-align: left !important;">{{item.PLATFORM_DESC}}</td>
+                        <td>{{item.VOLUME}}</td>
+                        <td>{{item.RATED_POWER}}</td>
+                        <td>{{item.RATED_SPEED}}</td>
+                        <td>{{item.ASPIRATION_DESC}}</td>
+                        <td>{{item.CREATED_BY_NAME}}</td>
+                        <td class="dateWidth">{{item.CREATION_DATE}}</td>
+                        <td>{{item.MODIFIED_BY_NAME}}</td>
+                        <td class="dateWidth">{{item.MODIFIED_DATE}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="11">
+                            <button class="border-0 mx-2 darkBlue btnIcon float-start" type="button" (click)="exportExcel()"><i class="fa-solid fa-file-arrow-down fs-5"></i>&nbsp;&nbsp;</button>
+                            <pagination-controls style="height:25px;float: right;" class="pagination" (pageChange)="handlePageChange($event)"></pagination-controls>
+                            <p style="height:10px;float: right;">Number of Records: <b>{{engineFamilyDetails.length}}</b></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

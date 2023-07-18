@@ -1,0 +1,8 @@
+table>tbody>tr>td{
+    text-align: center;
+}
+.scrolling{
+    height: calc(100vh - 208px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}

@@ -1,0 +1,118 @@
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width:'30vw'}" [baseZIndex]="10000"
+rejectButtonStyleClass="p-button-raised p-button-info" acceptButtonStyleClass="p-button-raised"></p-confirmDialog>
+<div class="card shadow">
+    <div class="card-body px-0">
+        <div>
+            <h6 class="text-center">Table 12 Of AIS-007</h6>
+            <p class="text-center">DETAILS OF CHANGE IN TECHNICAL SPECIFICATION</p>
+            <div class="my-2 borderGray">
+                <b class="ps-2">Manufactures Name And Address</b><sup *ngIf="!dis2"><b>*</b></sup>
+                <select class="mx-3" (change)="selectManufacture($event)" [(ngModel)]="manufacture" [disabled]="openAs" [ngClass]="{'border1':isSubmitted && datavalidate(manufacture)==''}">
+                    <option value="">--Select Address--</option>
+                    <option *ngFor="let obj of manufactureArr" [value]="obj.ADDR_NAME">{{obj.ADDR_NAME}}</option>
+                </select>
+            </div>
+            <textarea class="form-control border-0" rows="4" style="width: 450px;" [readonly]="true" [(ngModel)]="form.MANUFACTURER" maxlength="1000"></textarea>
+            <div class="my-2 borderGray">
+                <b class="ps-2">Name Of The Model And Variants</b>
+            </div>
+            <textarea class="form-control border-0" [readonly]="true" [(ngModel)]="form.MODEL_VARIANTS" maxlength="1000"></textarea>
+            <table class="table table-bordered tableStyle my-0">
+                <thead>
+                    <tr class="borderGray">
+                        <th style="width:200px">Clause No.</th>
+                        <th style="width:500px">CMVR Certificate No.<sup *ngIf="!dis2"><b>*</b></sup></th>
+                        <th>Date<sup *ngIf="!dis2"><b>*</b></sup></th>
+                        <th>Specification No.<sup *ngIf="!dis2"><b>*</b></sup></th>
+                    </tr>
+                </thead>
+                <tbody [ngClass]="{'dis':openAs}">
+                    <tr class="specStyle">
+                        <td class="text-center vertalign">3.1</td>
+                        <td [ngClass]="{'borderl':isSubmitted && datavalidate(form.CMVR_CERTIFICATE_NO)==''}"><div ><input type="text" class="form-control border-0" placeholder="CMVR Certificate No."
+                            [(ngModel)]="form.CMVR_CERTIFICATE_NO" (change)="dataSend()" [disabled]="openAs" maxlength="100"> </div></td>
+                        <td class="p-0"> <div [ngClass]="{'border1':isSubmitted && datavalidate(form.CMVR_CERTIFICATE_DATE)==''}">
+                            <p-calendar [showIcon]="true" inputId="icon" [readonlyInput]="true" dateFormat="dd-mm-yy" class="dateBorder"
+                            placeholder="Select Date" [(ngModel)]="form.CMVR_CERTIFICATE_DATE" [disabled]="openAs" (onSelect)="dataSend()"></p-calendar></div></td>
+                        <td [ngClass]="{'border1':isSubmitted && datavalidate(form.SPECIFICATION_NO)==''}"><div >
+                            <input type="text" class="form-control border-0" placeholder="Specification No." [(ngModel)]="form.SPECIFICATION_NO" (change)="dataSend()" [disabled]="openAs" maxlength="100"></div></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered my-0">
+                <thead>
+                    <tr class="borderGray">
+                        <th colspan="4" class="text-start">Valid Extension</th>
+                    </tr>
+                </thead>
+                <tbody [ngClass]="{'dis':openAs}">
+                    <tr class="specStyle">
+                        <td class="text-center vertalign" style="width:200px">4.1</td>
+                        <td class="vertalign" style="width:500px">Dated<sup *ngIf="!dis2"><b>*</b></sup></td>
+                        <td colspan="2" class="p-0" [ngClass]="{'borderl':isSubmitted && datavalidate(form.EXTENSION_DATE)==''}"><div ><p-calendar [showIcon]="true" inputId="icon" [readonlyInput]="true" dateFormat="dd-mm-yy" class="dateBorder"
+                            placeholder="DD MM YYYY" [(ngModel)]="form.EXTENSION_DATE" [disabled]="openAs" (onSelect)="dataSend()"></p-calendar></div></td>
+                    </tr>
+                    <tr class="specStyle">
+                        <td class="text-center vertalign" style="width:200px">4.2</td>
+                        <td class="vertalign" style="width:500px">Specifications Revision<sup *ngIf="!dis2"><b>*</b></sup></td>
+                        <td colspan="2" [ngClass]="{'borderl':isSubmitted && datavalidate(form.EXTENSION_SPEC_REV)==''}"><div ><input type="text" class="form-control border-0" placeholder="Specifications Revision" [(ngModel)]="form.EXTENSION_SPEC_REV"
+                            (change)="dataSend()" [disabled]="openAs" maxlength="100"></div></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="width:500px" class="borderGray align-middle py-0"><b>Nature Of Change<sup *ngIf="!dis2"><b>*</b></sup></b></td>
+                        <td colspan="2" [ngClass]="{'borderl':isSubmitted && datavalidate(form.NATURE_OF_CHANGE)==''}"><div ><input type="text" class="form-control border-0 py-0" placeholder="Nature Of Change" [(ngModel)]="form.NATURE_OF_CHANGE"
+                            (change)="dataSend()" [disabled]="openAs" maxlength="100"></div></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered tableStyle my-0">
+                <thead>
+                    <tr class="borderGray">
+                        <th colspan="6"class="borderGray text-start py-2"><b>Changes In The Specifications</b></th>
+                    </tr>
+                </thead>
+                <tbody [ngClass]="{'dis':openAs}">
+                    <tr>
+                        <th>Engine Model Name<sup *ngIf="!dis2"><b>*</b></sup></th>
+                        <th>Spec. No. & Clause No.<sup *ngIf="!dis2"><b>*</b></sup></th>
+                        <th>Description<sup *ngIf="!dis2"><b>*</b></sup></th>
+                        <th>Parameter(Earlier)<sup *ngIf="!dis2"><b>*</b></sup></th>
+                        <th>Parameter(New Extension)<sup *ngIf="!dis2"><b>*</b></sup></th>
+                        <th></th>
+                    </tr>
+                    <tr *ngFor="let obj of specificationArr" class="specStyle">
+                        <td [ngClass]="{'border1':isSubmitted && datavalidate(obj.ENGINE_MODEL_NAME)==''}"><div >
+                            <input type="text" class="form-control border-0" placeholder="Engine Model Name" (change)="dataSend()" [(ngModel)]="obj.ENGINE_MODEL_NAME" [disabled]="openAs" maxlength="100"> </div></td>
+                        <td style="width: 230px;" [ngClass]="{'border1':isSubmitted && datavalidate(obj.SPEC_NO)==''}"><div >
+                            <input type="text" class="form-control border-0" (change)="dataSend()" placeholder="Spec. No. & Clause No." [(ngModel)]="obj.SPEC_NO" [disabled]="openAs" maxlength="100"> 
+                        </div></td>
+                        <td [ngClass]="{'border1':isSubmitted && datavalidate(obj.DESCRIPTION)==''}"><div >
+                            <input type="text" class="form-control border-0" placeholder="Description" (change)="dataSend()" [(ngModel)]="obj.DESCRIPTION" [disabled]="openAs" maxlength="500"> 
+                        </div></td>
+                        <td [ngClass]="{'border1':isSubmitted && datavalidate(obj.PARAMETER_EARLIER)==''}"><div >
+                            <input type="text" class="form-control border-0" placeholder="Parameter(Earlier)" (change)="dataSend()" [(ngModel)]="obj.PARAMETER_EARLIER" [disabled]="openAs"  maxlength="100"> 
+                        </div></td>
+                        <td [ngClass]="{'border1':isSubmitted && datavalidate(obj.PARAMETER_NEW_EXTENSION)==''}"><div >
+                            <input type="text" class="form-control border-0" placeholder="Parameter(New Extension)" (change)="dataSend()" [(ngModel)]="obj.PARAMETER_NEW_EXTENSION" [disabled]="openAs"  maxlength="100">
+                        </div></td>
+                        <td style="width:40px"> <button class="btn" (click)="deleteSpecification(obj);" type="button" *ngIf="!openAs"><i class="fa-solid fa-trash fs-6" style="color:red"></i></button></td>
+                    </tr>
+                    <tr *ngIf="!openAs">
+                        <td class="p-0" colspan="6"><button class="btn btnColor px-4 rounded-0 mx-0"
+                                (click)="addSpecifications()" type="button"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;Add New
+                                Enclosures</button>
+                            </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-12 mt-1" *ngIf="!openAs">
+            <button class="btn btn-secondary rounded-0 float-end mx-2" type="button" style="background:#142128" (click)="clearSave()" *ngIf="datavalidate(HR_REF_NO)!=''"><i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;Save</button>
+            <button class="btn btn-light rounded-0 float-end mx-2 border border-dark" type="button" (click)="clear()"><i class="fa-solid fa-ban"></i>&nbsp;&nbsp;Clear</button>
+        </div>
+    </div>
+</div>
+
+<div class="common_modal" *ngIf="call_modal">
+    <app-common-modal [data_display]="data_send"></app-common-modal>
+</div>

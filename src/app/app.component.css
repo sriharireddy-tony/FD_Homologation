@@ -1,0 +1,45 @@
+
+.btnss{
+    margin: 10px 0;
+}
+.bottom_section{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.btns_section button{
+    border-radius: 2px !important;
+    padding: 7px 20px !important;
+}
+
+.new_div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+}
+.mahindraLogo{
+    position: absolute !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 100 !important;
+    height: 25% !important;
+    width: 25% !important;
+    top: 31% !important;
+    left: 39%;
+    animation: beat 1s infinite;
+    /* background: #00000066 !important; */
+}
+@keyframes beat {
+    0% { transform: scale(1);}
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1);}
+  }
+  .loading{
+    position: absolute !important;
+    top: 56%;
+    left: 46%;
+    z-index: 100;
+    color: white;
+    font-size: 30px;
+  }

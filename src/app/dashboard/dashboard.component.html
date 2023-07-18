@@ -1,0 +1,204 @@
+<div class="scrolling">
+    <div class="row mx-3 mt-2">
+        <div class="col-lg-3">
+            <h6>Request ID</h6>
+            <span class="position-relative">
+                <ng-autocomplete [data]="requestIDArr" placeholder="Search Request ID" [(ngModel)]="requestIDStr1"
+                                (selected)="selectEvent($event)" [searchKeyword]="keyword"
+                                [itemTemplate]="itemTemplate" (inputCleared)="clearReqID()"
+                                (change)="changeReqId()"> </ng-autocomplete>
+                            <span *ngIf="convToStr(requestIDStr1)== '' "><i id="searchicon" class="fa fa-search"></i></span>
+                            <ng-template #itemTemplate let-item>
+                                <a [innerHTML]="item.REQUEST_NO"></a>
+                            </ng-template>
+            </span>
+           
+        </div>
+        <div class="col-lg-3">
+            <h6>Engine Family Number</h6>
+            <select class="form-select" [(ngModel)]="searchObj.engineNumber" (change)="getEngineModel()">
+                <option value=''>Select Engine Family Number</option>
+                <option *ngFor="let obj of ENGINE_FAMILY_NO_Arr" [value]="obj.engineFamilyNo">{{obj.engineFamilyNo}}</option>
+            </select>
+        </div>
+        <div class="col-lg-3">
+            <h6>Engine Model Name</h6>
+            <select class="form-select" [(ngModel)]="searchObj.engineModel">
+                <option value=''>Select Engine Model Name</option>
+                <option *ngFor="let obj of engineModel" [value]="obj">{{obj}}</option>
+            </select>
+        </div>
+        <div class="col-lg-3">
+            <h6>Process Status</h6>
+            <select class="form-select" [(ngModel)]="searchObj.status">
+                <option value=''>Select Process Status</option>
+                <option *ngFor="let obj of processStatus" [value]="obj">{{obj}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mx-3 mt-3">
+        <div class="col-lg-3">
+            <h6>Stage</h6>
+            <select class="form-select" [(ngModel)]="searchObj.stage">
+                <option value=''>Select Stage</option>
+                <option *ngFor="let obj of stage" [value]="obj">{{obj}}</option>
+            </select>
+        </div>
+        <div class="col-lg-3">
+            <h6>Initiator</h6>
+            <span class="position-relative">
+                <ng-autocomplete [data]="requestNameArr" placeholder="Search Initiator" [(ngModel)]="initiator1"
+                                (selected)="selectEventInitiator($event)" [searchKeyword]="keyword1"
+                                [itemTemplate]="itemTemplate1" (inputCleared)="clearInitiator()"
+                                (change)="checkInit()"> </ng-autocomplete>
+                            <span *ngIf="convToStr(initiator1)== ''"><i id="searchicon" class="fa fa-search"></i></span>
+                            <ng-template #itemTemplate1 let-item>
+                                <a [innerHTML]="item.INITIATOR"></a>
+                            </ng-template>
+            </span>
+        </div>
+        <div class="col-lg-3">
+            <h6>From Date</h6>
+            <p-calendar [showIcon]="true" inputId="icon" [readonlyInput]="true" dateFormat="dd-mm-yy" placeholder="Select From Date"
+                [(ngModel)]="searchObj.fromDate" (onSelect)="dateValidation()"></p-calendar>
+        </div>
+        <div class="col-lg-3">
+            <h6>To Date</h6>
+            <p-calendar [showIcon]="true" inputId="icon" [readonlyInput]="true" dateFormat="dd-mm-yy" placeholder="Select To Date"
+                [(ngModel)]="searchObj.toDate" (onSelect)="dateValidation()"></p-calendar>
+        </div>
+    </div>
+    <div class="row mx-3 mt-4">
+        <div class="col-lg-3">
+            <h6>Select Location</h6>
+            <div class="d-flex mt-1">
+                <input class="form-check-input mx-2" type="radio" name="LOCATION" value="Domestic"
+                    [(ngModel)]="searchObj.location"> Domestic &nbsp; &nbsp;&nbsp;
+                <input class="form-check-input mx-2" type="radio" name="LOCATION" value="Export"
+                    [(ngModel)]="searchObj.location"> Export
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <h6>Certification Type</h6>
+            <div class="d-flex mt-1">
+                <input class="form-check-input mx-2" type="radio" name="Type" value="Approval"
+                    [(ngModel)]="searchObj.type"> Type Approval &nbsp; &nbsp;&nbsp;
+                <input class="form-check-input mx-2" type="radio" name="Type" value="Amendment"
+                    [(ngModel)]="searchObj.type"> Amendment
+            </div>
+        </div>
+        <div class="col-lg-3">
+
+
+        </div>
+        <div class="col-lg-3 mt-2">
+            <button class="btnrounded-0 float-end mx-1" type="button"
+                style="border:2px solid rgb(1, 64, 82);background-color:white;padding: 6px 20px 6px 20px;color:rgb(1, 64, 82)"
+                (click)="clear()">
+                <i style="color:rgb(1, 64, 82)" class="fa-solid fa-ban"></i>&nbsp;&nbsp;<b>Clear</b></button>
+            <button class="btn rounded-0 float-end mx-1" style="background:rgb(1, 64, 82);color:white;" type="button"
+                (click)="getDetails()"><i class="fa-regular fa-circle-question"></i>&nbsp;&nbsp;<b>Get Details</b></button>
+        </div>
+    </div>
+    <div class="mx-4 mt-4">
+        <b>
+            <hr style="border-top: 2px solid;" />
+        </b>
+    </div>
+    <div class="mx-4">
+        <div class="col-lg-12 mt-3">
+            <table class="table table-bordered">
+                <thead>
+                    <tr style="background-color: rgb(4, 111, 141);color:white">
+                        <th *ngIf="dashboardView()" style="width:35px"></th>
+                        <th style="width:25px;">S.No</th>
+                        <th style="width:120px;text-align:center;">Request ID</th>
+                        <th style="width:160px;text-align:center;">Family of Engines</th>
+                        <!-- <th>Engine Model</th> -->
+                        <th style="width: 200px;">Initiated By</th>
+                        <th style="width: 180px;">Initiated On</th>
+                        <th style="width:170px">Stage</th>
+                        <th style="width:200px">ARAI Request No.</th>
+                        <th>APEX No.</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of searchedData | paginate: pagination; let i=index">
+                        <td *ngIf="dashboardView()"><input type="checkbox" class="form-check-input" [(ngModel)]="item.checked" (change)="getAAH(item.HR_REF_NO, $event)" ></td>
+                        <td style="text-align:center;">{{i+1}}</td>
+                        <td [ngClass]="{'cursorBlue' : (isDash_ViewDashbrd  ||   isDashboard ||  !isViewDashbrd), 'cursorNone': isViewDashbrd}" (click)="clickToView(item.HR_REF_NO)">
+                            {{item.REQUEST_NO}}
+                        </td>
+                        <td class="text-center">{{item.ENGINE_FAMILY_NO}}</td>
+                        <!-- <td>{{item.id}}</td> -->
+                        <td class="text-center">{{item.CREATOR}}</td>
+                        <td class="dateWidth">{{item.INITIATION_DATE}}</td>
+                        <td class="text-center">{{item.STAGE_DESC}}</td>
+                        <td class="text-center">{{item.ARAI_NO}}</td>
+                        <td class="text-center">{{item.APEX_NO }}</td>
+                        <td class="text-center" style="width: 200px;">{{item.PROCESS_STATUS_DESC}}
+                            &nbsp;<i *ngIf="item.PROCESS_STATUS_DESC=='Completed' && (isDash_ViewDashbrd || isViewDashbrd)" class="fa-solid fa-paper-plane" style="cursor: pointer;" (click)="mailTrigger(item.HR_REF_NO)"></i></td>
+                    </tr>
+                    <tr>
+                        <td colspan="11" style="padding:1px;">
+                            <span *ngIf="dashboardView()">
+                                <button class="border-0 mt-1 btn btn-dark mx-2 btnIcon" type="button" (click)="workflowHistory()" [disabled]="previndex==undefined"><i
+                                        class="fa-solid fa-clock-rotate-left fs-5"></i>&nbsp;</button>
+                                <button class="border-0 mt-1 btn btn-dark btnIcon" type="button" (click)="exportExcel()" [disabled]="searchedData.length==0"><i class="fa-solid fa-file-arrow-down fs-5"></i>&nbsp;&nbsp;</button>
+                            </span>
+                            <span>
+                                <pagination-controls style="height:25px;float: right;" class="pagination mt-1"
+                                    (pageChange)="handlePageChange($event)"></pagination-controls>
+                                <p class="mt-1" style="height:10px;float: right;">Number of Records: <b>{{searchedData.length}}</b>
+                                </p>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-cus shadow" tabindex="-1" role="dialog" [ngStyle]="{'display':AAHPopup}">
+    <div class="modal-dialog modal-dialog-centered border-0 modal-xl AAH" role="document">
+        <div class="modal-content">
+            <div class="modal-header d-flex p-0" style="background-color:rgb(1, 64, 82);color:white;height:40px;">
+                <h5 style="margin-left:20px;" class="mb-0">Workflow History</h5>
+                <button style="padding: 0px 15px;font-size:25px;border-radius:10px;" type="button"
+                    class="popup-close justify-content-end" (click)="closeWorkFlowDoc()">X</button>
+            </div>
+            <div class="modal-body shadow">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr style="background-color: rgb(4, 111, 141);color:white">
+                            <th style="width:35px">S.No</th>
+                            <th style="width:150px">Approval Stage</th>
+                            <th style="text-align: center;width: 200px;">Approver</th>
+                            <th style="width:160px;text-align: center;">Status</th>
+                            <th style="width:180px">Assignee Date</th>
+                            <th style="width:70px">Ageing</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of AAHArr; let i =index">
+                            <td class="text-center">{{i+1}}</td>
+                            <td>{{item.STAGE_DESC}}</td>
+                            <td style="text-align: center;">{{item.APPROVER}}</td>
+                            <td>{{item.STATUS}}</td>
+                            <td class="text-center">{{item.ACTSTARTDATE}}</td>
+                            <td class="text-center">{{item.AGEING}}</td>
+                            <td>{{item.ACTREMARKS}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="common_modal" *ngIf="call_modal">
+    <app-common-modal [data_display]="data_send"></app-common-modal>
+</div>

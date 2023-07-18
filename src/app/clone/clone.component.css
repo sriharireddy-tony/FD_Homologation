@@ -1,0 +1,25 @@
+.scrolling{
+    height: calc(100vh - 208px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+#searchicon{
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 22px;
+    color:rgb(0, 24, 37);
+}
+hr{
+    margin-top: 30px;
+    margin-bottom: 20px;
+    opacity: 1 !important;
+    border-bottom: 3px solid rgb(0, 59, 90);
+    }
+    sup{
+        top: 0px;
+        /* left: 1px; */
+        /* bottom: 45px; */
+        font-size: 22px;
+        color: red;
+    }

@@ -1,0 +1,83 @@
+.thead {
+    background-color: #edf2f5;
+    color: black;
+    caret-color: transparent;
+}
+table>tbody>tr>td{
+    vertical-align: middle;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    height: 40px;
+    word-break: break-all;
+}
+.borderRed1{
+    border-left: 2px solid red !important;
+    border-right: 1px solid red !important;
+    border-bottom: 1px solid red !important;
+    border-top: 2px solid red !important;
+}
+.bold{
+    font-weight: bold;
+}
+.popup-close{
+    color:white;
+    background-color: rgb(1, 64, 82);
+    border: none;
+}
+.header-text {
+    margin-top: 2px;
+  }
+
+/* repConfig */
+.borderBlue {
+    border: 1px solid rgb(4, 111, 141);
+}
+
+.darkBlu {
+    background-color: rgb(1, 64, 82);
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.thead {
+    background-color: #edf2f5;
+    color: black;
+}
+
+.tableAddIcon {
+    float: right;
+    display: flex;
+    margin-right: 5px;
+    margin-top: -30px;
+    border: none;
+    background: transparent;
+    font-size: 22px;
+}
+
+.tableDelIcon {
+    float: right;
+    margin-right: 10px;
+    color: red;
+    cursor: pointer;
+}
+.addRow {
+    border: none;
+    background-color: transparent;
+}
+
+table,
+th,
+td {
+    border: 1px solid rgb(212, 212, 212);
+    border-collapse: collapse;
+}
+.mt0{
+    margin-top: 0px !important;
+}
+.textCenter{
+   text-align: center; 
+}
+.textLeft{
+    text-align: left;
+}

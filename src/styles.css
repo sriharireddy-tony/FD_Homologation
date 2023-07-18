@@ -1,0 +1,349 @@
+.borderRed {
+    border: 1px solid red !important;
+}
+
+body {
+    margin: 0px !important;
+    height: 100% !important;
+    background: rgb(4, 111, 141) !important;
+    overflow: hidden !important;
+}
+
+.common_modal>p-dialog>div>div>.p-dialog-header {
+    background-color: rgb(4, 111, 141) !important;
+    padding: 2px 8px !important;
+}
+
+.common_modal>p-dialog>div>div>.p-dialog-header>.p-dialog-header-icons>button,
+.common_modal>p-dialog>div>div>.p-dialog-header>span {
+    color: white !important;
+}
+
+.common_modal>p-dialog>div>div>.p-dialog-footer {
+    padding-bottom: 10px;
+}
+
+.common_modal>p-dialog>div>div>.p-dialog-footer>button {
+    background: #0072c4;
+    border-radius: 5px;
+    font-size: 13px;
+    color: #fff;
+    text-align: center;
+    border: 1px solid transparent;
+    padding: 3px 5px;
+    cursor: pointer;
+    outline: 0;
+    font-style: normal;
+    font-weight: 300;
+}
+
+.common_modal>p-dialog>div>div>.p-dialog-content>p {
+    margin: 20px 0 !important;
+    text-align: center;
+    padding: 0 !important;
+    font-weight: 500;
+}
+
+.ngx-pagination .current {
+    background: rgb(0 61 93) !important;
+}
+
+.dateWidth {
+    width: 190px;
+    text-align: center;
+}
+
+.SNoWidth {
+    width: 20px;
+    text-align: center;
+}
+
+.modal-cus {
+    background-color: #0000004f;
+    box-shadow: #0072c4;
+}
+
+.shadow {
+    box-shadow: 0 1.5rem 2rem rgb(0 0 0 / 38%) !important;
+}
+
+.docDownload {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.color {
+    color: rgb(0, 59, 90)
+}
+
+body {
+    text-shadow: 0 0 black;
+}
+
+.darkBlue {
+    background: rgb(0, 24, 37);
+    color: white;
+}
+
+table>thead>tr>th {
+    text-align: center;
+}
+
+.p-calendar {
+    width: 100% !important;
+    height: 38px !important;
+}
+
+.p-button {
+    color: rgb(0, 24, 37) !important;
+    background: transparent !important;
+    border-right: 1px solid rgb(0, 24, 37) !important;
+}
+
+.p-datepicker table td {
+    padding: 0rem !important;
+}
+
+.p-datepicker table td>span.p-highlight {
+    color: white !important;
+    background: rgb(0, 24, 37) !important;
+}
+
+.p-datepicker .p-datepicker-header {
+    padding: 0rem !important;
+}
+
+.p-datepicker table td>span {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    border-radius: 0% !important;
+}
+
+.p-datepicker .p-datepicker-header .p-datepicker-title {
+    line-height: 1rem !important;
+    color: black;
+    background-color: #fef4dd;
+}
+
+.p-datepicker:not(.p-datepicker-inline) .p-datepicker-header {
+    background: #fef4dd !important;
+}
+
+.p-button:enabled {
+    border-left-color: white !important;
+    border-top-color: rgb(197, 197, 197) !important;
+    border-bottom-color: rgb(197, 197, 197) !important;
+    border-right-color: rgb(197, 197, 197) !important;
+}
+
+.p-autocomplete {
+    width: 100% !important;
+    height: 38px !important;
+}
+
+p-calendar>span>button>span.p-button-icon.pi.pi-calendar {
+    font-weight: bold !important;
+}
+
+.autocomplete-container .input-container .x i {
+    color: rgb(0, 24, 37) !important;
+    font-size: 27px !important;
+}
+
+.autocomplete-container {
+    box-shadow: 0 0px 2px #0003, 0 0px 4px #00000024, 0 2px 2px -2px #0000001f !important;
+    border-radius: 6px !important;
+}
+
+.p-accordion .p-accordion-header .p-accordion-header-link {
+    padding: 13px !important;
+    background-color: rgb(1, 64, 82) !important;
+    color: white !important;
+}
+
+.ui-accordion .ui-accordion-header .ui-icon {
+    margin-top: -8px !important;
+    position: absolute !important;
+    right: 0.5em !important;
+    top: 50% !important;
+}
+
+.p-accordion .p-accordion-content {
+    border: 3px solid rgb(0, 59, 90) !important;
+    border-top-color: transparent !important;
+}
+
+.p-calendar .p-datepicker {
+    min-width: 350px !important;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon {
+    color: black !important;
+    background: white !important;
+}
+
+.p-dialog .p-dialog-header {
+    background: rgb(4, 111, 141) !important;
+    color: white !important;
+    padding: 0.8rem !important;
+}
+
+.p-dialog .p-dialog-content {
+    padding: 1.5rem 2rem 1.5rem !important;
+}
+
+.p-dialog .p-dialog-footer {
+    padding: 0.5rem 0.5rem 0.5rem !important;
+}
+
+.pi {
+    color: black !important;
+}
+
+.common_modal .p-dialog .p-dialog-content {
+    padding-bottom: 0px !important;
+}
+
+*:focus {
+    outline: none !important;
+}
+
+.p-dialog .p-dialog-content {
+    padding: 0.5rem 2rem 1.5rem !important;
+}
+
+.p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link {
+    border: 2px solid rgb(1, 64, 82) !important;
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+    box-shadow: none !important;
+    border-color: #ced4da !important;
+}
+
+.dis {
+    background-color: #e9ecef !important;
+    caret-color: transparent !important;
+}
+
+.tdPagination {
+    padding-top: 4px !important;
+}
+
+.flexBetween {
+    display: flex !important;
+    justify-content: space-between !important;
+    width: 100%;
+}
+
+.p-accordion .p-accordion-header .p-accordion-header-link {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    border-radius: 0px !important;
+}
+
+p-accordion>div>p-accordiontab>div>div>a>span::before {
+    color: white !important;
+}
+
+.accordHeight>div>p-accordiontab>div>div>a {
+    height: 44px !important;
+}
+
+p-accordiontab>div>div>a>span {
+    order: 1 !important;
+    margin-right: 0px !important;
+    padding-left: 8px;
+}
+
+p-accordiontab>div>div>a {
+    box-shadow: none !important;
+    border-color: transparent !important;
+}
+
+.header-button {
+    text-align: right;
+    border: none;
+    border-radius: 3px;
+}
+
+.disNone {
+    display: none;
+}
+
+.p-accordion .p-accordion-content {
+    margin-top: -3px !important;
+}
+
+::-webkit-scrollbar {
+    width: 0.6em;
+    height: 0.7em;
+    border-left: 1px solid #ddd !important;
+    background: #e8e8e8;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(1, 64, 82);
+    border-radius: 8px;
+}
+
+p-confirmdialog>div>div>div.p-dialog-footer>button.p-button-raised.p-confirm-dialog-accept>span.p-button-icon.p-button-icon-left.pi.pi-check {
+    color: white !important;
+}
+
+p-confirmdialog>div>div>div.p-dialog-footer>button:focus {
+    box-shadow: none !important;
+    border-color: #ced4da !important;
+}
+
+p-confirmdialog>div>div>div.p-dialog-footer>button.p-button-raised.p-confirm-dialog-accept {
+    background-color: rgb(0, 59, 90) !important;
+    color: white !important;
+}
+
+.dateBorder .p-button:enabled,
+.dateBorder input {
+    border: none !important;
+    box-shadow: none !important;
+    border-color: #ced4da !important;
+}
+.AAH{
+    --bs-modal-width: 80vw !important;
+}
+.Doc{
+    --bs-modal-width: 70vw !important;
+}
+.p-progress-spinner{
+    position: absolute !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 100 !important;
+    background: #00000066 !important;
+}
+.p-progress-spinner-svg{
+    height:0% !important;
+    width: 0% !important;
+    top: 0% !important;
+}
+.p-multiselect {
+    width: 100% !important;
+    height: 38px !important;
+}
+.p-multiselect .p-multiselect-label {
+    padding: 0.3rem 0.75rem !important;
+}
+.p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-inputtext {
+    padding: 0.25rem 0.75rem !important;
+}
+.p-multiselect-panel .p-multiselect-header {
+    padding: 0.35rem 1.25rem !important;
+}
+.p-multiselect.p-multiselect-chip .p-multiselect-token {
+    padding:  0px !important;
+}
+.accordHeight .p-accordion-content {
+height: calc(100vh - 293px) !important;
+}

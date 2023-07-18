@@ -1,0 +1,12 @@
+.scrolling{
+    height: calc(100vh - 175px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+sup{
+    top: 0px;
+    /* left: 1px; */
+    /* bottom: 45px; */
+    font-size: 22px;
+    color: red;
+}

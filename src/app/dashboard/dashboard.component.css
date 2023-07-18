@@ -1,0 +1,43 @@
+.btnIcon {
+    padding-right: 0px;
+    border-radius: 3px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-bottom: 4px;
+    padding-left: 6px
+}
+
+#searchicon {
+    position: absolute;
+    top: 10px;
+    right: 18px;
+    font-size: 22px;
+    color: rgb(0, 24, 37);
+}
+
+.scrolling {
+    height: calc(100vh - 208px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.popup-close {
+    color: white;
+    background-color: rgb(1, 64, 82);
+    border: none;
+}
+
+.cursorBlue {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+    text-align: center;
+    pointer-events: inherit !important;
+}
+
+.cursorNone {
+    pointer-events: none;
+}
+table > tbody > tr > td {
+    word-break: break-all;
+}

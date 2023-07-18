@@ -1,0 +1,153 @@
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width:'30vw'}" [baseZIndex]="10000"
+rejectButtonStyleClass="p-button-raised p-button-info" acceptButtonStyleClass="p-button-raised">
+</p-confirmDialog>
+<div *ngFor="let obj1 of variantsArr1;let i1=index">
+    <p-accordion>
+        <p-accordionTab [selected]="false">
+            <p-header class="flexBetween">
+                <span class="header-text">Chapter 2 ({{obj1.LOV_DESC}})</span>
+                <button class="header-button" *ngIf="datavalidate(obj1.HRV_REF_NO)!=''" (click)="onButtonClick($event,obj1)" type="button">Download</button>
+            </p-header>
+            <p-footer>
+                <div>
+                    <table class="table table-bordered">
+                        <thead class="thead">
+                            <tr>
+                                <th >Attribute Name</th>
+                                <th >Attribute Description</th>
+                                <th style="width:500px;">Values</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let obj of obj1.Table12Arr1;let i=index"
+                                [ngClass]="{'bold':datavalidate(obj.ATTR_HIGHLIGHT)=='Yes','dis':openAs}">
+                                <td class="thead">{{obj.ATTR_NAME}}</td>
+                                <td class="thead">{{obj.ATTR_DESC}}</td>
+                                <td [ngClass]="{'borderRed1':datavalidate(obj.ATTR_VALUE)=='' && submitted && datavalidate(obj.MANDATORY)=='Yes','thead':datavalidate(obj.ATTR_CHARACTERISTICS)=='Sub_Group','dis':openAs}"
+                                    *ngIf="!(obj.ATTR_CHARACTERISTICS=='Image')">
+                                    <input type="text" class="form-control border-0" [(ngModel)]="obj.ATTR_VALUE" *ngIf="obj.ATTR_CHARACTERISTICS=='String' || obj.ATTR_CHARACTERISTICS=='Text'"
+                                        maxlength="1000" [disabled]="datavalidate(obj.ATTR_CHARACTERISTICS)=='Sub_Group'||openAs">
+                                    <input type="text" class="form-control border-0" [(ngModel)]="obj.ATTR_VALUE" *ngIf="obj.ATTR_CHARACTERISTICS=='Integer'"
+                                        maxlength="1000" [disabled]="datavalidate(obj.ATTR_CHARACTERISTICS)=='Sub_Group'||openAs" appNumbers>
+                                </td>
+                                <td *ngIf="obj.ATTR_CHARACTERISTICS=='Image'"
+                                    [ngClass]="{'borderRed1':datavalidate(obj.ANNEXURE_PATH)=='' && submitted && datavalidate(obj.MANDATORY)=='Yes','thead':datavalidate(obj.ATTR_CHARACTERISTICS)=='Sub_Group','dis':openAs}">
+                                    &nbsp;
+                                    <i class="fa-solid fa-cloud-arrow-up fs-5" role="button"
+                                        (click)="certUploadFile(i1,i)"
+                                        *ngIf="datavalidate(obj.ANNEXURE_PATH)==''&&!openAs"></i>
+                                    <i class="fa-solid fa-image fs-5" role="button"
+                                        (click)="popOpen(obj.ANNEXURE_PATH,obj.ANNEXURE_NAME)"
+                                        *ngIf="datavalidate(obj.ANNEXURE_PATH)!=''"></i>
+                                    <i class="fa-solid fa-trash fs-5 float-end"
+                                        *ngIf="datavalidate(obj.ANNEXURE_PATH)!=''&&!openAs" style="color:red;"
+                                        role="button" (click)="deleteImage(i1,i)"></i>
+                                </td>
+                                <input type="file" id="certfileUploadDoc1" (change)="certUploadFileDoc1($event)"
+                                    defaultValue="image.jpg" value="certfileUploadDoc1"
+                                    name="certfileUploadDoc1" style="display:none" >
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="">
+                    <!-- <button class="tableAddIcon" (click)="addTable(i1);" type="button" [disabled]="obj1.Mode.length>4"><i
+                            class="fa-solid fa-file-circle-plus" *ngIf="!openAs"></i></button>
+                    <div class="mt-5 d-flex overflow-auto">
+                        <table class="table table-bordered" style="margin-bottom: 0px;" *ngFor="let obj of obj1.Mode;let i=index">
+                            <thead class="thead">
+                                <tr>
+                                    <th colspan="2" class="text-center">MODE - {{i+1}}<span class="tableDelIcon" [ngClass]="{'disNone':openAs}"
+                                            *ngIf="modeDelBtnHide(i1,obj)" (click)="deleteTable(i1,i,obj);">
+                                            <i class="fa-solid fa-trash"></i></span></th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">{{obj.theader1}}</th>
+                                    <th class="text-center">{{obj.theader2}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let obj2 of obj.innerArr;let i2=index">
+                                    <td class="d-flex border-0" [ngClass]="{'dis':openAs}">
+                                        <span *ngIf="i==0" class="d-flex" style="margin-left: inherit;">
+                                            <button type="button" *ngIf="obj.innerArr.length == i2+1" class="addRow"
+                                                (click)="addRow(i1,i);" [ngClass]="{'disNone':openAs}">
+                                                <i class="fa-solid fa-file-circle-plus"></i></button>
+                                            <button type="button" *ngIf="!(i2==0)" class="addRow" (click)="deleteRow(i1,i2,obj2);"
+                                                style="margin-left:0px;" [ngClass]="{'disNone':openAs}">
+                                                <i class="fa-solid fa-trash" style="color:red"></i></button>
+                                        </span>
+                                        <span style="margin-left: auto;">
+                                            <input type="text" style="width:12vw !important" [disabled]="openAs" maxlength="20"
+                                                class="form-control border-0 text-center" [(ngModel)]="obj2.ENGINE_SPEED" appNumbers>
+                                        </span>
+                                    </td>
+                                    <td [ngClass]="{'dis':openAs}"><input type="text" class="form-control border-0 text-center" [disabled]="openAs"
+                                            style="width:12vw !important" [(ngModel)]="obj2.GROSS_POWER" maxlength="20" appNumbers></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div> -->
+    
+                    <div class="mt-4">
+                        <table class="table table-bordered">
+                            <thead class="thead">
+                                <tr>
+                                    <th class="text-center" style="width:200px;">Measurement Point</th>
+                                    <th class="text-center">Engine Speed (Rpm)</th>
+                                    <th class="text-center"> Gross Power (kW)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let obj of obj1.Measurment;let i=index">
+                                    <!-- <td class="text-center" *ngIf="i1<1">{{i1+1}}</td> -->
+                                    <td class="d-flex justify-content-center mt-1 border-0" [ngClass]="{'dis':openAs,'mt0':openAs}">
+                                        <div style="width: 100%;" [ngClass]="{'textLeft':!openAs,'textCenter':openAs}">{{i+1}}</div>
+                                        <div class="d-flex" *ngIf="true" style="margin-left: auto;">
+                                            <button class="addRow" type="button" (click)="addMesurment(i1)"
+                                                *ngIf="obj1.Measurment.length == i+1" [ngClass]="{'disNone':openAs}">
+                                                <i class="fa-solid fa-file-circle-plus"></i></button>
+                                            <button class="addRow" type="button" (click)="deleteMesurment(i1,i)" *ngIf="!(i==0)" [ngClass]="{'disNone':openAs}">
+                                                <i class="fa-solid fa-trash" style="color:red"></i></button>
+                                        </div>
+                                    </td>
+                                    <td [ngClass]="{'dis':openAs,'borderRed1':submitted && datavalidate(obj.ENGINE_SPEED) == ''}"><input type="text" class="form-control border-0 text-center"
+                                            [(ngModel)]="obj.ENGINE_SPEED" [disabled]="openAs" maxlength="4" appNumbers></td>
+                                    <td [ngClass]="{'dis':openAs,'borderRed1':submitted && datavalidate(obj.GROSS_POWER) == ''}"><input type="text" class="form-control border-0 text-center"
+                                            [(ngModel)]="obj.GROSS_POWER" [disabled]="openAs" appdigitOnly></td>
+                                </tr>
+                            </tbody>
+                        </table>
+    
+                    </div>
+                    <div class="col-lg-12 py-1 mb-4" *ngIf="!openAs">
+                        <button class="btn btn-secondary rounded-0 float-end mx-2" type="button" style="background:#142128" (click)="clearSave(obj1)" *ngIf="datavalidate(obj1.HRV_REF_NO)!=''"><i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;Save</button>
+                        <button class="btn btn-light rounded-0 float-end mx-2 border  border-dark" type="button" (click)="clear(obj1.HRV_REF_NO,obj1.LOV_DESC)"><i class="fa-solid fa-ban"></i>&nbsp;&nbsp;Clear</button>
+                    </div>
+                </div>
+            </p-footer>
+        </p-accordionTab>
+    </p-accordion>
+</div>
+
+<div class="modal modal-cus shadow" tabindex="-1" role="dialog" [ngStyle]="{'display':AAHPopup}">
+    <div class="modal-dialog modal-dialog-centered border-0 modal-xl" role="document" style="width:634px">
+        <div class="modal-content">
+            <div class="modal-header d-flex p-0" style="background-color:rgb(1, 64, 82);color:white;height:40px;">
+                <h5 style="margin-left:20px;" class="mb-0">Image - {{hearderImg}}</h5>
+                <button style="padding: 0px 15px;font-size:25px;border-radius:10px;" type="button"
+                    class="popup-close justify-content-end" (click)="closeWorkFlowDoc()">X</button>
+            </div>
+            <div class="modal-body shadow">
+                <img [src]="imgPathUrl" height="500" width="600">
+                <div class="mt-2">
+                    <button class="btn rounded-0 float-end" style="background:#142128;color: white;" type="button" (click)="downloadFile()">Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="common_modal" *ngIf="call_modal">
+    <app-common-modal [data_display]="data_send"></app-common-modal>
+</div>

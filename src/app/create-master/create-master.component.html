@@ -1,0 +1,43 @@
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width:'30vw'}" [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-raised p-button-info" acceptButtonStyleClass="p-button-raised"></p-confirmDialog>
+<div class="container-fluid px-4 scrolling" >
+    <div class="col-lg-12 mt-1">
+        <div class="">
+            <table class="table table-bordered">
+                <thead >
+                    <tr style="background-color: rgb(4, 111, 141);color:white">
+                        <th class="SNoWidth">S.No</th>
+                        <th>Attribute Name</th>
+                        <th style="width: 150px;">Document Name</th>
+                        <th >Attribute Description</th>
+                        <th style="min-width: 180px;">Created By</th>
+                        <th class="dateWidth">Created On</th>
+                        <th style="min-width: 180px;">Updated By</th>
+                        <th class="dateWidth">Updated On</th>
+                        <th *ngIf="false"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of createMaterData | paginate: pagination; let i=index">
+                        <td class="SNoWidth">{{i+1}}</td>
+                        <td style="cursor:pointer;color:blue;text-decoration:underline;" (click)="clickToView(item.ATTR_REF_ID)">{{item.ATTR_NAME}}</td>
+                        <td class="text-center">{{item.DOUMENT_NAME}}</td>
+                        <td >{{item.ATTR_DESC}}</td>
+                        <td>{{item.CREATED_BY_NAME}}</td>
+                        <td class="dateWidth">{{item.CREATIONDATE}}</td>
+                        <td>{{item.MODIFIED_BY_NAME}}</td>
+                        <td class="dateWidth">{{item.MODIFIEDDATE}}</td>
+                        <td *ngIf="false"><i class="fa-solid fa-trash" style="color:red;cursor: pointer;" (click)="deleteMasterAttr(item)"></i></td>
+                    </tr>
+                    <tr>
+                        <td colspan="9">
+                            <button class="border-0 mx-2 darkBlue btnIcon float-start" type="button" (click)="exportExcel()"><i class="fa-solid fa-file-arrow-down fs-5"></i></button>
+                            <pagination-controls style="height:25px;float: right;" class="pagination" (pageChange)="handlePageChange($event)"></pagination-controls>
+                            <p style="height:10px;float: right;">Number of Records: <b>{{createMaterData.length}}</b></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

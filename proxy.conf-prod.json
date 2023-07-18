@@ -1,0 +1,39 @@
+{
+
+    "/com.eibus.web.soap.Gateway.wcp": {
+  
+      "target": "http://nb1001:8080/home/Venkat/",
+  
+      "secure": false,
+  
+      "logLevel": "debug",
+  
+      "changeOrigin": false
+  
+    },
+  
+    "/com.eibus.sso.web.authentication.PreLoginInfo.wcp": {
+  
+      "target": "http://nb1001:8080/home/Venkat/",
+  
+      "secure": false,
+    
+      "logLevel": "debug",
+  
+      "changeOrigin": false
+  
+    },
+  
+    "/cordys/": {
+  
+      "target": "http://nb1001:8080/",
+  
+      "secure": false,
+  
+      "logLevel": "debug",
+  
+      "changeOrigin": false
+  
+    }
+  
+  }

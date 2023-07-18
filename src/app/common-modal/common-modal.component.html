@@ -1,0 +1,10 @@
+<div class="common_modal">
+<p-dialog  header="Notification" [(visible)]="displayBasic" [modal]="true" [style]="{width: '30vw'}" [baseZIndex]="10000"
+[draggable]="false" [resizable]="false" [dismissableMask]="false" (onHide)="close()">
+    <p>{{data_display.text}}</p>
+    <p>{{data_display.text1}}&nbsp;&nbsp;<b>{{data_display.text2}}</b></p>
+    <ng-template pTemplate="footer">
+       <!-- <button (click)="data_display.active = false">Close</button>   -->
+    </ng-template>
+</p-dialog>
+</div>

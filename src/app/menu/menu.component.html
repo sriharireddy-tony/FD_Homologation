@@ -1,0 +1,68 @@
+<div *ngIf="menuHide">
+    <div class="container-fluid">
+        <div class="col-lg-12">
+            <div class="main">
+                <nav class="navbar navbar-expand-sm navbar-light" style="padding-bottom: 0px;">
+                    <div class="mt-4 nav_header">
+                        <div class="collapse navbar-collapse" id="navbarNav" >
+                            <div class="nav_tabs px-4">
+                            <div>
+                            <ul class="navbar-nav nav-tabs float-start">
+                                <li class="nav-item mx-1" *ngIf="tabHide('Inbox')" routerLinkActive="active">
+                                    <a class="nav-link btn py-2 px-3" routerLink="/inbox" (click)="tabClick('inbox')"><b>Inbox</b></a>
+                                </li>
+                                <li class="nav-item" *ngIf="tabHide('Saved')" routerLinkActive="active">
+                                    <a class="nav-link btn py-2 px-3" routerLink="/saved" (click)="tabClick('saved')"><b>Saved</b></a>
+                                </li>
+                                <li class="nav-item mx-1" *ngIf="tabHide('Completed Task')" routerLinkActive="active" >
+                                    <a class="nav-link btn py-2 px-3" routerLink="/completedTasks" (click)="tabClick('completedTasks')"><b>Completed Task</b></a>
+                                </li>
+                                <li class="nav-item" *ngIf="dashboardTab()" routerLinkActive="active">
+                                    <a class="nav-link btn py-2 px-3" routerLink="/dashboard" (click)="tabClick('dashboard')"><b>Dashboard</b></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul class="navbar-nav nav-tabs float-end">
+                                <li class="nav-item" *ngIf="tabHide('Create New Request')" routerLinkActive="active">
+                                    <a class="nav-link btn py-2 px-3" routerLink="/createNewRequest" (click)="tabClick('createNewRequest')">
+                                        <b>Create New Request</b>
+                                    </a>
+                                </li>
+                                <li class="nav-item mx-1" *ngIf="tabHide('Clone')" routerLinkActive="active">
+                                    <a class="nav-link btn py-2 px-3" routerLink="/clone" (click)="tabClick('clone')"><b>Clone</b></a>
+                                </li>
+                                <li class="nav-item" *ngIf="tabHide('Engine Family')" routerLinkActive="active">
+                                    <a class="nav-link btn py-2 px-3" routerLink="/engineFamily" (click)="tabClick('engineFamily')"><b>Engine Family</b></a>
+                                </li>
+                                <li class="nav-item mx-1" *ngIf="tabHide('Engine Model')" routerLinkActive="active">
+                                    <a class="nav-link btn py-2 px-3" routerLink="/engineModel" (click)="tabClick('engineModel')"><b>Engine Model</b></a>
+                                </li>
+                                <li class="nav-item" *ngIf="tabHide('Create Master Attributes')" routerLinkActive="active">
+                                    <a class="nav-link btn py-2 px-3" routerLink="/createmaster" (click)="tabClick('createmaster')"><b>Create Master Attributes</b></a>
+                                </li>
+                                <li class="nav-item mx-1" *ngIf="tabHide('Report Config')" routerLinkActive="active">
+                                    <a class="nav-link btn py-2 px-3" routerLink="/reportconfig" (click)="tabClick('reportconfig')"><b>Report Configuration</b></a>
+                                </li>
+                            </ul>
+                        </div>
+                        </div>
+                        </div>
+                    </div>
+                </nav>   
+                </div>
+        </div>
+        <div class="row mt-3">
+            <h5 *ngIf="tabName == 'engineFamily'" routerLink="/createNewEngineFamily" (click)="tabClick('createNewEngineFamily')">
+                <b class="float-end" style="margin-right:24px;cursor:pointer;color:rgb(4, 111, 141);">+ Create New Engine Family</b></h5>
+            <h5 *ngIf="tabName == 'engineModel'" routerLink="/createNewEngineModel" (click)="tabClick('createNewEngineModel')">
+                <b class="float-end" style="margin-right:24px;cursor:pointer;color:rgb(4, 111, 141);">+ Create New Engine Model</b></h5>
+            <h5 *ngIf="tabName == 'createmaster'"  routerLink="/createmasterform" (click)="tabClick('createmasterform')">
+                <b class="float-end" style="margin-right:24px;cursor:pointer;color:rgb(4, 111, 141);">+ Create New Master Attributes</b></h5>
+        </div>
+    </div>
+</div>
+
+<div class="">
+    <router-outlet></router-outlet>
+</div>

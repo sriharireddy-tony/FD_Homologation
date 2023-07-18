@@ -1,0 +1,80 @@
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width:'30vw'}" [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-raised p-button-info" acceptButtonStyleClass="p-button-raised"></p-confirmDialog>
+<div class="card shadow">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-8 mb-3">
+                <div class="d-flex">
+                    <h6 class="ps-1">To<sup *ngIf="!dis2"><b>*</b></sup></h6>
+                    <select class="mx-3 mb-2" (change)="selectLocation($event)" [(ngModel)]="TO" [disabled]="openAs" [ngClass]="{'border1':isSubmitted && TO==''}">
+                        <option value="">--Select Location--</option>
+                        <option *ngFor="let obj of locationArr" [value]="obj.ADDR_NAME">{{obj.ADDR_NAME}}</option>
+                    </select>
+                </div>
+                <textarea class="form-control" rows="4" [(ngModel)]="address" disabled></textarea>
+            </div>
+            <div class="col-lg-1">
+            </div>
+            <div class="col-lg-3">
+                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <h6>Dear Sir/Madam,</h6>
+                <div class="d-flex border" [ngClass]="{'dis':openAs}">
+                    <b class="mt-2 ps-3">Sub: </b>
+                    &nbsp;&nbsp;<p class="mt-2">Certification Type:-</p>
+                    <div class="d-flex mt-2 mx-3">
+                        <input class="form-check-input mx-3 mt-2" type="radio" name="a"
+                            [checked]="clarificationType=='Approval'" disabled>
+                        <p class="mt-1" style="margin-left: -10px;">Type Approval</p> &nbsp; &nbsp;&nbsp;
+                        <input class="form-check-input mx-3 mt-2" type="radio" name="a"
+                            [checked]="clarificationType=='Amendment'" disabled>
+                        <p class="mt-1" style="margin-left: -10px;">Amendment</p>
+                    </div> 
+                </div> 
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-12">
+                <h6>Content<sup *ngIf="!dis2"><b>*</b></sup></h6>
+                <textarea class="form-control" rows="5" [(ngModel)]="CL_CONTENT" [disabled]="openAs"
+                    maxlength="4000" (change)="dataSend()" [ngClass]="{'border1':isSubmitted && datavalidate(CL_CONTENT)==''}"></textarea>
+            </div>
+        </div>
+      
+        <div class="row mt-3">
+            <h6>Enclosure<sup *ngIf="!dis2"><b>*</b></sup></h6>
+            <div class="col-lg-12">
+                <table class="table table-bordered">
+                    <tbody [ngClass]="{'dis':openAs}">
+                        <tr *ngFor="let obj of encolosureArr;let i=index">
+                            <td class="ps-2 d-flex py-0" [ngClass]="{'border1':isSubmitted && datavalidate(obj.ENCLOSURE)==''}">
+                                <input type="text" class="form-control border-0" [(ngModel)]="obj.ENCLOSURE"
+                                    [disabled]="openAs" maxlength="1000" (change)="dataSend()">
+                                <button class="btn" (click)="deleteEnclosure(obj);" type="button" *ngIf="!openAs"><i
+                                        class="fa-solid fa-trash" style="color:red"></i></button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="!openAs">
+                            <td class="p-0"><button class="btn btnColor px-4 rounded-0 mx-0" [disabled]="openAs"
+                                    (click)="addEnclosure()" type="button"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;Add New Enclosures</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-12 mt-1" *ngIf="!openAs">
+            <button class="btn btn-secondary rounded-0 float-end mx-2" type="button" style="background:#142128" (click)="clearSave()"
+                *ngIf="datavalidate(HR_REF_NO)!=''"><i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;Save</button>
+            <button class="btn btn-light rounded-0 float-end mx-2 border border-dark" type="button" (click)="clear()"><i
+                    class="fa-solid fa-ban"></i>&nbsp;&nbsp;Clear</button>
+        </div>
+    </div>
+</div> 
+
+<div class="common_modal" *ngIf="call_modal">
+    <app-common-modal [data_display]="data_send"></app-common-modal>
+</div>

@@ -1,0 +1,20 @@
+.btnColor{
+    color: white;
+    background-color: rgb(0, 24, 37);
+}
+table>tbody>tr>td{
+    vertical-align: middle;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.border1{
+    border: 1px solid red !important;
+    border-radius: 5px !important;
+}
+sup{
+    top: 0px;
+    /* left: 1px; */
+    /* bottom: 45px; */
+    font-size: 22px;
+    color: red;
+}

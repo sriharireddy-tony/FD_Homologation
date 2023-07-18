@@ -1,0 +1,506 @@
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" [style]="{width:'30vw'}" [baseZIndex]="10000"
+    rejectButtonStyleClass="p-button-raised p-button-info" acceptButtonStyleClass="p-button-raised"></p-confirmDialog>
+    
+<div style="border-bottom: 4px solid rgb(0, 24, 37);height: 50px;" class="justifyCenter" *ngIf="backBtnLink()">
+    <div>
+        <button class="btn border-0 d-flex" type="button" (click)="back()"><i class="fa-solid fa-circle-arrow-left mt-1"
+                style="font-size:22px"></i> &nbsp;&nbsp;<b class="fs-5">Request ID {{REQUEST_NO}}</b></button>
+    </div>
+    <div class="mt-1" style="margin-right:20px;" *ngIf="datavalidate(OpenAs)!=''">
+        <button class="border-0 mt-1 mx-2 darkBlue btnIcon" type="button" (click)="openDoc()" [ngClass]="{'border2':documentsArr.length ==0 && saveType=='submit'}"><i
+                class="fa-solid fa-upload fs-5"></i>&nbsp;&nbsp;</button>
+        <button class="border-0 mt-1 mx-2 darkBlue btnIcon" type="button" (click)="workflowHistory()"><i
+                class="fa-solid fa-clock-rotate-left fs-5"></i>&nbsp;&nbsp;</button>
+    </div>
+</div>
+<form [formGroup]="createRequestForm">
+    <div
+        [ngClass]="{'scrolling':datavalidate(openAs) =='','scrolling1':datavalidate(openAs) !='','scrollClone':routeName=='clone'}">
+        <div class="container-fluid mx-4 my-3">
+            <div class="col-lg-12 mt-4">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label><b>Select Location</b><sup *ngIf="!dis2"><b>*</b></sup></label>
+                        <div class="d-flex mt-1">
+                            <input class="form-check-input" type="radio" name="LOCATION" value="Domestic"
+                                [ngClass]="{'borderRed': isSaveSubm && createRequestForm.get('LOCATION')?.invalid}"
+                                formControlName="LOCATION" [attr.disabled]="datavalidate(HR_REF_NO)!='' || null"> &nbsp;&nbsp;Domestic
+                            <span title="Yet to implement"><input class="form-check-input mx-2 disEvent" type="radio" name="LOCATION" value="Export"
+                                [ngClass]="{'borderRed': isSaveSubm && createRequestForm.get('LOCATION')?.invalid}"
+                                formControlName="LOCATION" [attr.disabled]="true || null"> 
+                                <span >Export</span></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <label><b>Certification Type</b><sup *ngIf="!dis2"><b>*</b></sup></label>
+                        <div class="d-flex mt-1">
+                            <input class="form-check-input" type="radio" name="CERTIFICATION_TYPE" value="Approval" (change)="validTypeApproval()"
+                                [ngClass]="{'borderRed': isSaveSubm && createRequestForm.get('CERTIFICATION_TYPE')?.invalid}"
+                                formControlName="CERTIFICATION_TYPE" [attr.disabled]="datavalidate(HR_REF_NO)!='' || null"> &nbsp;&nbsp;Type
+                            Approval &nbsp;&nbsp;
+                            <input class="form-check-input mx-2" type="radio" name="CERTIFICATION_TYPE" (change)="validTypeApproval()"
+                                [ngClass]="{'borderRed': isSaveSubm && createRequestForm.get('CERTIFICATION_TYPE')?.invalid}"
+                                value="Amendment" formControlName="CERTIFICATION_TYPE" [attr.disabled]="datavalidate(HR_REF_NO)!='' || null">Amendment
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <label><b>Engine Family Number</b><sup *ngIf="!dis2"><b>*</b></sup></label>
+                        <select class="form-select" formControlName="ENGINE_FAMILY_NO" [attr.disabled]="datavalidate(HR_REF_NO)!='' || null"
+                            (change)="getFDHLEngineModelsByFamily()"
+                            [ngClass]="{'borderRed': isSaveSubm && createRequestForm.get('ENGINE_FAMILY_NO')?.invalid}">
+                            <option value=''>Select Engine Family Number</option>
+                            <option *ngFor="let obj of ENGINE_FAMILY_NO_Arr" [value]="obj.ENGINE_FAMILY_NO">
+                                {{obj.ENGINE_FAMILY_NO}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1">
+
+                    </div>
+                    <div class="col-lg-2 mt-3" *ngIf="datavalidate(openAs)==''">
+                        <button class="border-0 mt-1 mx-2 darkBlue btnIcon" type="button" (click)="workflowHistory()"><i
+                                class="fa-solid fa-clock-rotate-left fs-5"></i>&nbsp;&nbsp;</button>
+                        <!-- <button class="border-0 mt-1 mx-2 darkBlue btnIcon" ><i class="fa-solid fa-database fs-5"></i>&nbsp;&nbsp;</button> -->
+                        <button class="btn mx-1 docBtnIcon mb-1" style="background-color:rgb(0, 24, 37);color:white;"
+                            (click)="openDoc()" type="button" [ngClass]="{'border2':documentsArr.length ==0 && saveType=='submit'}">
+                            <i class="fa-solid fa-upload mb-1"></i></button>
+                    </div>
+                </div>
+                <div class="row" *ngIf="datavalidate(this.createRequestForm.controls['ENGINE_FAMILY_NO'].value)!=''">
+                    <div class="col-lg-11" style="display: grid;">
+                        <label><b>Parent/Variant Engine</b><sup *ngIf="!dis2"><b>*</b></sup></label>
+                        <div class="d-flex mt-2 px-3" style="border:1px solid #e9ecef;flex-flow: wrap;" [ngClass]="{'dis':dis2}">
+                            <div *ngFor="let obj of engineVarient" class="d-flex mx-3 py-1">
+                                <input type="checkbox" class="form-check-input" value="obj.VARIANT"
+                                    [(ngModel)]="obj.isChecked" (change)="variantSelect(obj)"
+                                    [ngClass]="{'borderRed': isSaveSubm && variantsArr.length==0}"
+                                    [attr.disabled]="dis2 || null" [ngModelOptions]="{standalone: true}">
+                                &nbsp;&nbsp;{{obj.VARIANT}}&nbsp;({{obj.ENGINE_MODEL_NO}})
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="col-lg-12 mb-1" style="display: inline-block;" *ngIf="datavalidate(HR_REF_NO)!=''">
+            <button class="btn btn-secondary rounded-0 mx-5 float-end" type="button" style="background:#142128" (click)="consolidate()">Consolidate</button>
+        </div>
+        <div *ngIf="!(datavalidate(createRequestForm.controls['CERTIFICATION_TYPE'].value)=='')">
+            <div class="mx-4 mb-0">
+                <p-accordion class="accord">
+                    <p-accordionTab [selected]="false">
+                        <p-header class="flexBetween">
+                            <span class="header-text">Covering Letter (Regulation 00{{reguCovering}})</span>
+                            <button class="header-button" *ngIf="datavalidate(HR_REF_NO)!=''" type="button" (click)="onButtonClick($event,'Covering Letter')">Download</button>
+                        </p-header>
+                        <p-footer>
+                            <app-covering-letter
+                                [clarificationType]="datavalidate(createRequestForm.controls['CERTIFICATION_TYPE'].value)"
+                                [HR_REF_NO]="HR_REF_NO" (dataEvent)="receiveData($event)"></app-covering-letter>
+                        </p-footer>
+                    </p-accordionTab>
+                </p-accordion>
+            </div>
+            <div class="mx-4 mb-0"
+                *ngIf="!(datavalidate(createRequestForm.controls['CERTIFICATION_TYPE'].value)=='Approval')">
+                <p-accordion>
+                    <p-accordionTab [selected]="false">
+                        <p-header class="flexBetween">
+                            <span class="header-text">Table 12 (Regulation 00{{reguTable12}})</span>
+                            <button class="header-button" *ngIf="datavalidate(HR_REF_NO)!=''"  type="button"(click)="onButtonClick($event,'Table 12')">Download</button>
+                        </p-header>
+                        <p-footer>
+                            <app-table12 [nameArrStr]="nameArrStr" [HR_REF_NO]="HR_REF_NO" (dataEvent)="receiveData1($event)"></app-table12>
+                        </p-footer>
+                    </p-accordionTab>
+                </p-accordion>
+            </div>
+        </div>
+        <div *ngIf="variantsArr.length!=0">
+            <div class="mx-4 mb-0" *ngIf="emisionComplaince=='TR4' || emisionComplaince=='CE4'">
+                <app-table4g [table4gVar]="table4gVar" [variantsArr]="variantsArr" [HRV_REF_NOArr]="HRV_REF_NOArr"
+                    [HR_REF_NO]="HR_REF_NO"></app-table4g>
+            </div>
+            <div class="mx-4 mb-0" *ngIf="emisionComplaince=='B3A' || emisionComplaince=='CE3'">
+                <app-chapter2 [table4gVar]="chapter2Var" [variantsArr1]="variantsArr1" [HRV_REF_NOArr]="HRV_REF_NOArr"
+                    [HR_REF_NO]="HR_REF_NO"></app-chapter2>
+            </div>
+        </div>
+        <div class="mx-4 mb-0" *ngIf="variantsArr.length!=0">
+            <p-accordion class="accord">
+                <p-accordionTab [selected]="false">
+                    <p-header class="flexBetween">
+                        <span class="header-text">Annexure</span>
+                    </p-header>
+                    <p-footer>
+                        <table class="table table-bordered anTable">
+                            <thead class="thead">
+                                <tr>
+                                    <th style="width: 120px;">Attribute Id</th>
+                                    <th >Attribute Name</th>
+                                    <th style="width:45%;">Values</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let obj of anexureArr;let i=index" [ngClass]="{'bold':datavalidate(obj.ATTR_HIGHLIGHT)=='Yes'}">
+                                    <td class="thead" style="text-align: center;">{{obj.ATTR_ID}}</td>
+                                    <td class="thead">{{obj.ATTR_NAME}}</td>
+                                        <td [ngClass]="{'borderRed1':datavalidate(obj.ATTR_VALUE)=='' && footerSubm && datavalidate(obj.MANDATORY)=='Yes','thead':datavalidate(obj.ATTR_CHARACTERISTICS)=='Sub_Group','dis':dis2}"
+                                        *ngIf="!(obj.ATTR_CHARACTERISTICS=='Image')">
+                                        <input type="text" class="form-control border-0" [(ngModel)]="obj.ATTR_VALUE" maxlength="1000"
+                                            accept="image/png, image/gif, image/jpeg" *ngIf="obj.ATTR_CHARACTERISTICS=='String'"
+                                            [disabled]="(datavalidate(obj.ATTR_CHARACTERISTICS)=='Sub_Group' || dis2)" [ngModelOptions]="{standalone: true}">
+                                        <input type="text" class="form-control border-0" [(ngModel)]="obj.ATTR_VALUE" maxlength="1000"
+                                            accept="image/png, image/gif, image/jpeg" *ngIf="obj.ATTR_CHARACTERISTICS=='Integer'"
+                                            [disabled]="(datavalidate(obj.ATTR_CHARACTERISTICS)=='Sub_Group' || dis2)" appNumbers [ngModelOptions]="{standalone: true}">
+                                    </td>
+                                    <td *ngIf="obj.ATTR_CHARACTERISTICS=='Image'"
+                                        [ngClass]="{'borderRed1':datavalidate(obj.ANNEXURE_PATH)=='' && footerSubm && datavalidate(obj.MANDATORY)=='Yes','thead':datavalidate(obj.ATTR_CHARACTERISTICS)=='Sub_Group','dis':dis2}">
+                                        &nbsp;
+                                        <i class="fa-solid fa-cloud-arrow-up fs-5" role="button" (click)="AnneUploadFile1(i)"
+                                            *ngIf="datavalidate(obj.ANNEXURE_PATH)==''&&!dis2"></i>
+                                        <i class="fa-solid fa-image fs-5" role="button" (click)="popOpen(obj.ANNEXURE_PATH,obj.ANNEXURE_NAME)"
+                                            *ngIf="datavalidate(obj.ANNEXURE_PATH)!=''"></i>
+                                        <i class="fa-solid fa-trash fs-5 float-end"
+                                            *ngIf="datavalidate(obj.ANNEXURE_PATH)!=''&&!dis2" style="color:red;"
+                                            role="button" (click)="deleteImage(i)"></i>
+                                    </td>
+                                    <input type="file" id="anneUploadFile1Doc1" (change)="anneUploadFile1Doc1($event)"  defaultValue="image.jpg"
+                                         value="anneUploadFile1Doc1" name="anneUploadFile1Doc1" style="display:none">
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="col-lg-12 py-1 mb-4" *ngIf="!dis2">
+                            <button class="btn btn-secondary rounded-0 float-end mx-2" style="background:#142128" type="button" *ngIf="!dis2 && datavalidate(HR_REF_NO) != ''"
+                            (click)="saveAnnexure('annex')"><i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;Save</button>
+                            <button class="btn btn-light rounded-0 float-end mx-2 border border-dark" type="button" (click)="annexClear()"><i class="fa-solid fa-ban"></i>&nbsp;&nbsp;Clear</button>
+                        </div>
+                    </p-footer>
+                </p-accordionTab>
+            </p-accordion>
+        </div>
+        <div class="mx-4 mb-0" *ngIf="!(datavalidate(createRequestForm.controls['CERTIFICATION_TYPE'].value)=='')">
+            <p-accordion class="accord">
+                <p-accordionTab [selected]="false">
+                    <p-header class="flexBetween">
+                        <span class="header-text">Footer Configuration</span>
+                    </p-header>
+                    <p-footer>
+                        <div class="row mt-3">
+                            <div class="col-lg-6">
+                                <div class="d-flex">
+                                    <h6>Regards,<sup *ngIf="!dis2"><b>*</b></sup></h6>
+                                    <select class="mx-3 mb-2" (change)="selectRegards($event)" [(ngModel)]="regards"
+                                        [attr.disabled]="dis2 || null" [ngClass]="{'borderRed':footerSubm && datavalidate(regards)==''}" [ngModelOptions]="{standalone: true}">
+                                        <option value="">--Select Regards--</option>
+                                        <option *ngFor="let obj of regardsDropArr" [value]="obj">{{obj}}</option>
+                                    </select>
+                                </div>
+                                 <table class="table table-bordered">
+                                    <tbody [ngClass]="{'dis':dis2}">
+                                        <ng-container *ngIf="regardsArr.length!=0">
+                                            <tr>
+                                                <td class="text-center p-0" style="height: 60px;"><img
+                                                        [src]="datavalidate(regardsArr[0].data)" height="50" width="100"
+                                                        *ngIf="datavalidate(regardsArr[0].data)!=''"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0"><input type="text" class="form-control border-0 rounded-0"
+                                                        [value]="datavalidate(regardsArr[1].data)" placeholder="Name" readonly></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0"><input type="text" class="form-control border-0 rounded-0"
+                                                        [value]="datavalidate(regardsArr[2].data)" placeholder="Designation" readonly>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0"><input type="text" class="form-control border-0 rounded-0"
+                                                        [value]="datavalidate(regardsArr[3].data)" placeholder="Department" readonly>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0"><input type="text" class="form-control border-0 rounded-0"
+                                                        [value]="datavalidate(regardsArr[4].data)" placeholder="Company" readonly></td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-4">
+                               <h6>Document No<sup *ngIf="!dis2"><b>*</b></sup></h6>
+                               <input type="text" class="form-control" placeholder="Enter Document No" [(ngModel)]="DOCUMENT_NO" [ngModelOptions]="{standalone: true}"
+                                    [ngClass]="{'borderRed':footerSubm && datavalidate(DOCUMENT_NO) ==''}" [attr.disabled]="dis2 || null" maxlength="100">
+                            </div>
+                            <div class="col-lg-2" style="display: flex;justify-content: center;align-items: end;">
+                                <div class=" py-1 mb-4" *ngIf="!dis2">
+                                    <button class="btn btn-secondary rounded-0 float-end mx-2" style="background:#142128" type="button" *ngIf="!dis2 && datavalidate(HR_REF_NO) != ''"
+                                    (click)="saveFooter()"><i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;Save</button>
+                                    <button class="btn btn-light rounded-0 float-end mx-2 border border-dark" type="button" (click)="footerClear()"><i class="fa-solid fa-ban"></i>&nbsp;&nbsp;Clear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </p-footer>
+                </p-accordionTab>
+            </p-accordion>
+        </div>
+
+        <div class="px-4" *ngIf="dis2">
+            <div style="border:3px solid rgb(0, 59, 90);min-height:180px;" class="ps-3">
+                <b class="color mt-4 mb-4">Upload Documents</b>
+                <div class="d-flex my-2">
+                    <div class="mt-2 mx-2 width200">
+                        <p class="px-2 docBtnUpload" style="margin-bottom:0.5rem;" (click)="certUploadFile()"
+                            [ngClass]="{'border2px':docSubmit&&certdocumentsArr.length==0,'pBtnDis':!(this.OpenAs=='customInboxTask') || certSpinner}">
+                            <i class="fa-solid fa-upload"></i>&nbsp;&nbsp;Certificates<b class="sup1"
+                                *ngIf="this.OpenAs=='customInboxTask'">*</b></p>
+                                <!-- <p-progressSpinner *ngIf="certSpinner"></p-progressSpinner> -->
+                        <form style="display:none">
+                            <input type="file" id="certfileUploadDoc" (change)="certUploadFileDoc($event)"
+                                [(ngModel)]="certfileUploadDoc" name="certfileUploadDoc" style="display:none"
+                                [ngModelOptions]="{standalone: true}" value="certfileUploadDoc" #fileInput>
+                        </form>
+                        <div *ngFor="let obj of certdocumentsArr;let i=index" class="d-flex justify-content-between">
+                            <p class="docNameSize" title="{{obj.DOC_NAME}}" (click)="downloadFile(obj)">{{obj.DOC_NAME}}
+                            </p>
+                            <b style="color:red;cursor: pointer;" (click)="certDelete(i)"
+                                *ngIf="this.OpenAs=='customInboxTask'"><i class="fa-regular fa-circle-xmark"></i></b>
+                        </div>
+                    </div>
+                    <div class="mt-2  mx-2 width200">
+                        <p class="px-2 docBtnUpload" style="margin-bottom:0.5rem;" (click)="repUploadFile()"
+                            [ngClass]="{'border2px':docSubmit&&repdocumentsArr.length==0,'pBtnDis':!(this.OpenAs=='customInboxTask') || repSpinner}">
+                            <i class="fa-solid fa-upload"></i>&nbsp;&nbsp;Reports<b class="sup1"
+                                *ngIf="this.OpenAs=='customInboxTask'">*</b></p>
+                                <!-- <p-progressSpinner *ngIf="repSpinner"></p-progressSpinner> -->
+                        <form style="display:none">
+                            <input type="file" id="repfileUploadDoc" (change)="repUploadFileDoc($event)"
+                                [(ngModel)]="repfileUploadDoc" name="repfileUploadDoc" style="display:none"
+                                [ngModelOptions]="{standalone: true}" value="repfileUploadDoc" #fileInput>
+                        </form>
+                        <div *ngFor="let obj of repdocumentsArr;let i=index" class="d-flex justify-content-between">
+                            <p class="docNameSize" title="{{obj.DOC_NAME}}" (click)="downloadFile(obj)">{{obj.DOC_NAME}}
+                            </p>
+                            <b style="color:red;cursor: pointer" (click)="repDelete(i)"
+                                *ngIf="this.OpenAs=='customInboxTask'"><i class="fa-regular fa-circle-xmark"></i></b>
+                        </div>
+                    </div>
+                    <div class="mt-2 mx-2 width200">
+                        <p class="px-2 docBtnUpload" style="margin-bottom:0.5rem;" (click)="appUploadFile()"
+                            [ngClass]="{'border2px':docSubmit&&appdocumentsArr.length==0,'pBtnDis':!(this.OpenAs=='customInboxTask') || appSpinner}">
+                            <i class="fa-solid fa-upload"></i>&nbsp;&nbsp;Approved Spec Sheet<b class="sup1"
+                                *ngIf="this.OpenAs=='customInboxTask'">*</b></p>
+                                <!-- <p-progressSpinner *ngIf="appSpinner"></p-progressSpinner> -->
+                        <form style="display:none">
+                            <input type="file" id="appfileUploadDoc" (change)="appUploadFileDoc($event)"
+                                [(ngModel)]="appfileUploadDoc" name="appfileUploadDoc" style="display:none"
+                                [ngModelOptions]="{standalone: true}" value="appfileUploadDoc" #fileInput>
+                        </form>
+                        <div *ngFor="let obj of appdocumentsArr;let i=index" class="d-flex justify-content-between">
+                            <p class="docNameSize" title="{{obj.DOC_NAME}}" (click)="downloadFile(obj)">{{obj.DOC_NAME}}
+                            </p>
+                            <b style="color:red;cursor: pointer" (click)="appDelete(i)"
+                                *ngIf="this.OpenAs=='customInboxTask'"><i class="fa-regular fa-circle-xmark"></i></b>
+                        </div>
+                    </div>
+                    <div class="mt-2 mx-2 width200">
+                        <p class="px-2 docBtnUpload" style="margin-bottom:0.5rem;" (click)="draUploadFile()"
+                            [ngClass]="{'border2px':docSubmit&&dradocumentsArr.length==0,'pBtnDis':!(this.OpenAs=='customInboxTask') || dragSpinner}">
+                            <i class="fa-solid fa-upload"></i>&nbsp;&nbsp;Drawings<b class="sup1"
+                                *ngIf="this.OpenAs=='customInboxTask'">*</b></p>
+                                <!-- <p-progressSpinner *ngIf="dragSpinner"></p-progressSpinner> -->
+                        <form style="display:none">
+                            <input type="file" id="drafileUploadDoc" (change)="draUploadFileDoc($event)"
+                                [(ngModel)]="drafileUploadDoc" name="drafileUploadDoc" style="display:none"
+                                [ngModelOptions]="{standalone: true}" value="drafileUploadDoc" #fileInput>
+                        </form>
+                        <div *ngFor="let obj of dradocumentsArr;let i=index" class="d-flex justify-content-between">
+                            <p class="docNameSize" title="{{obj.DOC_NAME}}" (click)="downloadFile(obj)">{{obj.DOC_NAME}}
+                            </p>
+                            <b style="color:red;cursor: pointer" (click)="draDelete(i)"
+                                *ngIf="this.OpenAs=='customInboxTask'"><i class="fa-regular fa-circle-xmark"></i></b>
+                        </div>
+                    </div>
+                    <div class="mt-2 mx-2 width200">
+                        <p class="px-2 docBtnUpload" style="margin-bottom:0.5rem;" (click)="invUploadFile()"
+                            [ngClass]="{'border2px':docSubmit&&invdocumentsArr.length==0,'pBtnDis':!(this.OpenAs=='customInboxTask') || invSpinner}">
+                            <i class="fa-solid fa-upload"></i>&nbsp;&nbsp;Invoice<b class="sup1"
+                                *ngIf="this.OpenAs=='customInboxTask'">*</b></p>
+                                <!-- <p-progressSpinner *ngIf="invSpinner"></p-progressSpinner> -->
+                        <form style="display:none">
+                            <input type="file" id="invfileUploadDoc" (change)="invUploadFileDoc($event)"
+                                [(ngModel)]="invfileUploadDoc" name="invfileUploadDoc" style="display:none"
+                                [ngModelOptions]="{standalone: true}" value="invfileUploadDoc" #fileInput>
+                        </form>
+                        <div *ngFor="let obj of invdocumentsArr;let i=index" class="d-flex justify-content-between">
+                            <p class="docNameSize" title="{{obj.DOC_NAME}}" (click)="downloadFile(obj)">{{obj.DOC_NAME}}
+                            </p>
+                            <b style="color:red;cursor: pointer" (click)="invDelete(i)"
+                                *ngIf="this.OpenAs=='customInboxTask'"><i class="fa-regular fa-circle-xmark"></i></b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="mb-2 mx-3" *ngif="this.OpenAs=='customInboxTask'">
+        <button class="btn btn-secondary rounded-0 float-end mx-2" style="background:#142128;margin-top: -55px;"
+                    (click)="gridDocSave('save')"><i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;Save</button>
+    </div> -->
+        </div>
+        <div class="container-fluid my-3">
+            <div class="col-lg-12 mt-4 px-3">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label><b>WBS</b><sup *ngIf="!dis2"><b>*</b></sup></label>
+                        <input type="text" class="form-control" placeholder="Enter WBS" formControlName="WBS"
+                            maxlength="20"
+                            [ngClass]="{'borderRed': isSubmitted && createRequestForm.get('WBS')?.invalid && saveType!='clone'}"
+                            [attr.disabled]="dis2 || null">
+                    </div>
+                    <div class="col-lg-3">
+                        <label><b>Cost Center</b><sup *ngIf="!dis2"><b>*</b></sup></label>
+                        <input type="text" class="form-control" placeholder="Enter Cost Center"
+                            formControlName="COST_CENTER" maxlength="20"
+                            [ngClass]="{'borderRed': isSubmitted && createRequestForm.get('COST_CENTER')?.invalid && saveType!='clone'}"
+                            [attr.disabled]="dis2 || null">
+                    </div>
+                    <div class="col-lg-3" *ngIf="dis2">
+                        <label><b>ARAI Request No.</b><sup *ngIf="this.OpenAs=='customInboxTask'"><b>*</b></sup></label>
+                        <input type="text" class="form-control" placeholder="Enter ARAI Request No."
+                            formControlName="ARAI" maxlength="20"
+                            [ngClass]="{'borderRed': isSubmitted1 && createRequestForm.get('ARAI')?.invalid}"
+                            [required]="this.taskId!=''" [attr.disabled]="!(this.OpenAs=='customInboxTask') || null">
+                    </div>
+                    <div class="col-lg-3" *ngIf="dis2">
+                        <label><b>APEX No.</b><sup *ngIf="this.OpenAs=='customInboxTask'"><b>*</b></sup></label>
+                        <input type="text" class="form-control" placeholder="Enter APEX No." formControlName="APEX"
+                            [ngClass]="{'borderRed': docSubmit && createRequestForm.get('APEX')?.invalid && ARAITrue}"
+                            maxlength="20" [required]="this.taskId!=''"
+                            [attr.disabled]="!(this.OpenAs=='customInboxTask') || null">
+                    </div>
+                </div>
+                <div class="row mt-4" *ngIf="!(openAs=='completed' || openAs=='dashboard')">
+                    <div class="col-lg-6">
+                        <label><b>Remarks</b><sup *ngIf="datavalidate(OpenAs)!=''"><b>*</b></sup></label>
+                        <textarea class="form-control" placeholder="Please enter remarks" [(ngModel)]="remarks" [attr.disabled]="(OpenAs=='completed' ||OpenAs=='dashboard')  || null" 
+                        [ngModelOptions]="{standalone: true}" [ngClass]="{'borderRed': remarkSubmit && remarks==''}" maxlength="1000"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-cus shadow" tabindex="-1" role="dialog" [ngStyle]="{'display':AAHPopup}">
+        <div class="modal-dialog modal-dialog-centered border-0 modal-xl AAH" role="document">
+            <div class="modal-content">
+                <div class="modal-header d-flex p-0" style="background-color:rgb(1, 64, 82);color:white;height:40px;">
+                    <h5 style="margin-left:20px;" class="mb-0">Workflow History</h5>
+                    <button style="padding: 0px 15px;font-size:25px;border-radius:10px;" type="button"
+                        class="popup-close justify-content-end" (click)="closeWorkFlowDoc()">X</button>
+                </div>
+                <div class="modal-body shadow">
+                    <table class="table table-bordered" style="table-layout:fixed;">
+                        <thead>
+                            <tr style="background-color: rgb(4, 111, 141);color:white">
+                                <th style="width:50px">S.No</th>
+                                <th style="width:140px">Approval Stage</th>
+                                <th style="text-align: center;" style="width:200px">Approver</th>
+                                <th style="width:130px;text-align: center;">Status</th>
+                                <th style="width:180px">Assignee Date</th>
+                                <th style="width:180px">Approval Date</th>
+                                <th style="width:70px">Ageing</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of AAHArr; let i =index">
+                                <td class="text-center">{{i+1}}</td>
+                                <td>{{item.STAGE_DESC}}</td>
+                                <td style="text-align: center;">{{item.APPROVER}}</td>
+                                <td>{{item.STATUS}}</td>
+                                <td class="text-center">{{item.ACTSTARTDATE}}</td>
+                                <td class="text-center">{{item.ACTENDDATE}}</td>
+                                <td class="text-center">{{item.AGEING}}</td>
+                                <td class="tdRemarks">{{item.ACTREMARKS}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-cus shadow" tabindex="-1" role="dialog" [ngStyle]="{'display':displayPopup}">
+        <div class="modal-dialog modal-dialog-centered border-0 modal-xl Doc" role="document">
+            <div class="modal-content">
+                <div class="modal-header d-flex p-0" style="background-color:rgb(1, 64, 82);color:white;height:40px;">
+                    <h5 style="margin-left:20px;" class="mb-0">Documents</h5>
+                    <button style="padding: 0px 15px;font-size:25px;border-radius:10px;" type="button"
+                        class="popup-close justify-content-end" (click)="closeDoc()">X</button>
+                </div>
+                <div class="modal-body shadow">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr style="background-color: rgb(4, 111, 141);color:white">
+                                <th style="width:35px"><input type="checkbox" class="form-check-input"
+                                        [checked]="isAllCheckBoxChecked() && documentsArr.length>0"
+                                        [disabled]="documentsArr == 0 || dis2" (change)="checkAllCheckBox($event)">
+                                </th>
+                                <th style="width:400px">Doc. Name</th>
+                                <th style="text-align: center;width:200px">Uploaded By</th>
+                                <th style="width:175px;text-align: center;">Date</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of documentsArr; let i =index">
+                                <td><input type="checkbox" class="form-check-input"
+                                        [(ngModel)]="documentsArr[i].checked" [ngModelOptions]="{standalone: true}"
+                                        [disabled]="dis2" (change)="tdCheckbox(item)"></td>
+                                <td class="docDownload" (click)="downloadFile(item)">{{item.DOC_NAME}}</td>
+                                <td style="text-align: center;" *ngIf="item.DOC_REF_NO !=''">{{item.UPLOADERNAME}}</td>
+                                <td style="text-align: center;" *ngIf="item.DOC_REF_NO ==''">{{item.UPLOADERNAME}} - {{loginUserName}}</td>
+                                <td class="text-center">{{item.UPLOADED_ON}}</td> 
+                                <td><input type="text" class="form-control" style="border:none" maxlength="1000" [readonly]="dis2"
+                                        [(ngModel)]="item.DOC_REMARKS" [ngModelOptions]="{standalone: true}"> </td>
+                            </tr>
+                            <tr *ngIf="!dis2">
+                                <td colspan="9" class="py-1">
+                                    <button class="btn btn-dark mx-1 px-2 py-0" type="button" (click)="uploadFile()" [attr.disabled]="mainDocSpinner || null"><i
+                                            class="fa-solid fa-upload"></i></button>
+                                    <button class="btn btn-dark px-2 py-0" (click)="deleteFile()" type="button"
+                                        [disabled]="checkedRows.length==0"><i class="fa-solid fa-trash"></i></button>
+                                    <form style="display:none">
+                                        <input type="file" id="fileUploadDoc" (change)="UploadFileDoc($event)"
+                                            [(ngModel)]="fileUploadDoc" name="fileUploadDoc" style="display:none"
+                                            [ngModelOptions]="{standalone: true}" value="fileUploadDoc">
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modal-cus shadow" tabindex="-1" role="dialog" [ngStyle]="{'display':annePopup}">
+        <div class="modal-dialog modal-dialog-centered border-0 modal-xl" role="document" style="width:634px">
+            <div class="modal-content">
+                <div class="modal-header d-flex p-0" style="background-color:rgb(1, 64, 82);color:white;height:40px;">
+                    <h5 style="margin-left:20px;" class="mb-0">Image - {{hearderImg}}</h5>
+                    <button style="padding: 0px 15px;font-size:25px;border-radius:10px;" type="button"
+                        class="popup-close justify-content-end" (click)="closeannexure()">X</button>
+                </div>
+                <div class="modal-body shadow">
+                    <img [src]="imgPathUrl" height="500" width="600">
+                    <div class="mt-2">
+                        <button class="btn rounded-0 float-end" style="background:#142128;color: white;" type="button">Download</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="common_modal" *ngIf="call_modal">
+    <app-common-modal [data_display]="data_send"></app-common-modal>
+</div>

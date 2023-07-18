@@ -1,0 +1,24 @@
+.scrolling{
+    height: calc(100vh - 185px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+sup{
+    top: 0px;
+    /* left: 1px; */
+    /* bottom: 45px; */
+    font-size: 22px;
+    color: red;
+}
+
+.main__div{
+    height: 100%;
+    padding: 10px 20px 20px;
+}
+.col-lg-3{
+    margin: 12px  0;
+}
+.common_modal{
+    display: flex;
+    justify-content: flex-end;
+}

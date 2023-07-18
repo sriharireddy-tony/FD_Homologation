@@ -1,0 +1,47 @@
+<div class="container-fluid px-4 scrolling" >
+    <div class="col-lg-12 mt-1">
+        <div class="">
+            <table class="table table-bordered">
+                <thead >
+                    <tr style="background-color: rgb(4, 111, 141);color:white">
+                        <th class="SNoWidth">S.No</th>
+                        <th style="width: 180px;">Engine Model Name</th>
+                        <th>Engine Family No.</th>
+                        <th>Platform Name</th>
+                        <th>Application Type</th>
+                        <th style="width: 230px;">Engine Displacement(In Litres)</th>
+                        <th>Aspiration Type</th>
+                        <th>Variant</th>
+                        <th>Created By</th>
+                        <th class="dateWidth">Created On</th>
+                        <!-- <th>Updated By</th>
+                        <th class="dateWidth">Updated On</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of engineModelDetails | paginate: { itemsPerPage: 10, currentPage: page, totalItems: totalLength }; let i=index">
+                        <td class="SNoWidth">{{i+1}}</td>
+                        <td style="cursor:pointer;color:blue;text-decoration:underline;text-align:center;" (click)="clickToView(item.ENGINE_M_REF_ID)">{{item.ENGINE_MODEL_NO}}</td>
+                        <td>{{item.ENGINE_FAMILY_NO}}</td>
+                        <td>{{item.PLATFORMDESC}}</td>
+                        <td>{{item.APPLICATION_DESC}}</td>
+                        <td>{{item.DISPLACEMENT_L}}</td>
+                        <td>{{item.ASPIRATION_DESC}}</td>
+                        <td>{{item.VARIANT}}</td>
+                        <td>{{item.CREATED_BY_NAME}}</td>
+                        <td class="dateWidth">{{item.CREATION_DATE}}</td>
+                        <!-- <td>{{item.MODIFIED_BY}}</td>
+                        <td class="dateWidth">{{item.MODIFIED_DATE}}</td> -->
+                    </tr>
+                    <tr>
+                        <td colspan="12">
+                            <button class="border-0 mx-2 darkBlue btnIcon float-start" type="button" (click)="exportExcel()"><i class="fa-solid fa-file-arrow-down fs-5"></i>&nbsp;&nbsp;</button>
+                            <pagination-controls style="height:25px;float: right;" class="pagination" (pageChange)="handlePageChange($event)"></pagination-controls>
+                            <p style="height:10px;float: right;">Number of Records: <b>{{engineModelDetails.length}}</b></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

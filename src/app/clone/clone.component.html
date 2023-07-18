@@ -1,0 +1,22 @@
+<div class="scrolling">
+<div class="row my-2 mx-3">
+<div class="col-lg-3">
+<h6>Request Id<sup><b>*</b></sup></h6>
+<div class="position-relative" [ngClass]="{'borderRed':cloneCall=='clone'&&requestIDStr==''}">
+    <ng-autocomplete [data]="requestIDArr" placeholder="Search Request ID" [(ngModel)]="requestIDStr"
+                    (selected)="selectEvent($event)" [searchKeyword]="keyword"
+                    [itemTemplate]="itemTemplate" (inputCleared)="clearReqID()"> </ng-autocomplete>
+                <span *ngIf="toStr(requestIDStr)== '' "><i id="searchicon" class="fa fa-search"></i></span>
+                <ng-template #itemTemplate let-item>
+                    <a [innerHTML]="item.REQUEST_NO"></a>
+                </ng-template>
+</div>
+</div>
+<div class="col-lg-3">
+    <h6>Engine Family No.</h6>
+    <input type="text" class="form-control" placeholder="Family No." [(ngModel)]="familyNo" disabled>
+    </div>
+</div>
+<hr/>
+<app-create-new-request [requestIDClone]="requestIDStr" [cloneHRNo]="cloneHrNo"></app-create-new-request>
+</div>
