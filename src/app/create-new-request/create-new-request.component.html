@@ -15,7 +15,8 @@
 </div>
 <form [formGroup]="createRequestForm">
     <div
-        [ngClass]="{'scrolling':datavalidate(openAs) =='','scrolling1':datavalidate(openAs) !='','scrollClone':routeName=='clone'}">
+        [ngClass]="{'scrolling':(datavalidate(openAs) =='' && !cordInbox),'scrolling1':datavalidate(openAs) !='','scrollClone':routeName=='clone',
+                    'scrollCordyInbox': cordInbox}">
         <div class="container-fluid mx-4 my-3">
             <div class="col-lg-12 mt-4">
                 <div class="row">

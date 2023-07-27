@@ -13,6 +13,11 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
+.scrollCordyInbox{
+    height: calc(100vh - 120px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 hr{
 margin-top: 30px;
 opacity: 1 !important;

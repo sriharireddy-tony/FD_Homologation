@@ -44,18 +44,25 @@ export class AppComponent implements OnInit {
     })
     // if ($.cordys.authentication.sso.isAuthenticated()) {
       $.cordys.authentication.getUser().done((userObject: any) => {
-        if(this.datavalidate(userObject.userName)!='' && this.datavalidate(userObject.userName)!='anonymous'){
-          this.service.sharingData(userObject.userName, 'loginUserID');
-          this.service.sharingData(userObject.userDN.split(',')[0].split("=")[1], 'loginUserName');
-          this.getLovMasterData();
-          this.getEngineFamily();
-        } else {
-          $.cordys.authentication.sso.authenticate('venkat', 'venkat').done(() => {
-            this.getLovMasterData();
-            this.getEngineFamily();
-            // this.router.navigate(['/home']);
-          });
-        }
+        let param = { userId: userObject.userName};
+          if(this.datavalidate(userObject.userName)!='' && this.datavalidate(userObject.userName)!='anonymous'){
+          this.service.invokeService("GetFDHLLoginUser", param, this.namespace, true, false)
+          .then((response: any) => {
+              this.service.sharingData(userObject.userName, 'loginUserID');
+              this.service.sharingData(response[0].getFDHLLoginUser.USER.USERNAME, 'loginUserName');
+              this.getLovMasterData();
+              this.getEngineFamily();
+            }).catch((error: any) => {
+              alert(error);
+            });
+            } else {
+              $.cordys.authentication.sso.authenticate('venkat', 'venkat').done(() => {
+                this.getLovMasterData();
+                this.getEngineFamily();
+                // this.router.navigate(['/home']);
+              });
+            }
+        
       });
     // } else {
     //   $.cordys.authentication.sso.authenticate('venkat', 'venkat').done(() => {

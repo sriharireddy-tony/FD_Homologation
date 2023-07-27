@@ -62,7 +62,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(private service: Services, private datepipe: DatePipe, private fb: FormBuilder, private activatedRoute: ActivatedRoute, private location: Location,
     public menuComp: MenuComponent, private router: Router, private confirmationService: ConfirmationService) {
-    this.getEngineFamily();
+      this.getEngineFamily();
     this.loadPage();
     this.callReqManagementEmpty();
     this.service.lovMasaterList.subscribe((lovMasaterList: any) => {
@@ -175,11 +175,17 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       })
   }
   OpenAs: string = '';
+  cordInbox:boolean = false;
   getopenAs() {
     let routerName = window.location.href.split('/')[window.location.href.split('/').length - 1];
     if (routerName.includes('?')) {
-      this.OpenAs = routerName.split('?')[1].split('&')[1].split('=')[1]
-      if (this.OpenAs == 'customInboxTask' && this.actStage == '2' || this.OpenAs == 'completed' || this.OpenAs == 'dashboard') {
+      if(routerName.includes('openAs')){
+        this.OpenAs = routerName.split('?')[1].split('&')[1].split('=')[1]
+      } else {
+        this.OpenAs = 'customInboxTask';
+        this.cordInbox = true;
+      }
+      if (this.taskId != '' && this.actStage == '2' || this.OpenAs == 'completed' || this.OpenAs == 'dashboard') {
         this.dis2 = true;
         this.service.OpenAs.next(true)
       }
@@ -570,6 +576,9 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
     this.subscription?.unsubscribe();
   }
   backBtnLink() {
+    // if (this.taskId != '' && (this.datavalidate(this.openAs) == '')) {
+    //   return true;
+    // }
     if (this.HR_REF_NO != '' && (this.datavalidate(this.openAs) != '')) {
       return true;
     }
@@ -701,14 +710,11 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
           ARAI: this.datavalidate(res[0].ARAI_NO),
           APEX: this.datavalidate(res[0].APEX_NO),
         })
-
-        this.ENGINE_FAMILY_NO_Arr.forEach((d: any) => {
-          if (d.ENGINE_FAMILY_NO == this.createRequestForm.controls['ENGINE_FAMILY_NO'].value) {
-            this.emisionComplaince = d.EMISSION_COMPLIANCE
-          }
-        })
+        this.getEngineFamily();
+        setTimeout(() => {
+          this.getFDHLEngineModelsByFamily();
+        }, 100);
         // if(this.routeName!='clone'){
-        this.getFDHLEngineModelsByFamily();
         this.service.ARAIFlag.next(this.procesStatus)
         // }
       })
@@ -777,11 +783,6 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
     this.service.invokeService("GetFDHLEngineModelsByHRFamily", dataObj, this.namespace, true, false)
       .then((res: any) => {
         this.engineVarient = res;
-        this.ENGINE_FAMILY_NO_Arr.forEach((d: any) => {
-          if (d.ENGINE_FAMILY_NO == this.createRequestForm.controls['ENGINE_FAMILY_NO'].value) {
-            this.emisionComplaince = d.EMISSION_COMPLIANCE
-          }
-        })
         this.engineVarient.filter((d1: any) => {
           if (this.datavalidate(d1.HRV_REF_NO) != '') {
             // d.HRV_REF_NO = d1.HRV_REF_NO
@@ -792,6 +793,11 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
             this.variantsArr1.push({ HR_REF_NO: d1.HR_REF_NO, HRV_REF_NO: d1.HRV_REF_NO, LOV_DESC: d1.VARIANT, Table12Arr1: [], Measurment: [], Mode: [{ innerArr: [] }] })
           }
         })
+        this.ENGINE_FAMILY_NO_Arr.forEach((d: any) => {
+          if (d.ENGINE_FAMILY_NO == this.createRequestForm.controls['ENGINE_FAMILY_NO'].value) {
+            this.emisionComplaince = d.EMISSION_COMPLIANCE
+          }
+        })
     
         this.callReqManagement(this.HR_REF_NO);
         this.getFdHlAnnexureDetailsByFamily();
@@ -799,7 +805,6 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
           this.validTypeApproval();
         }
         this.isvarientCheck();
-        // this.getFdHlAnnexureDetailsByFamily();
       })
   }
   isvarientCheck() {
