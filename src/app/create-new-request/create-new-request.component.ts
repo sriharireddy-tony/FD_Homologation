@@ -62,7 +62,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(private service: Services, private datepipe: DatePipe, private fb: FormBuilder, private activatedRoute: ActivatedRoute, private location: Location,
     public menuComp: MenuComponent, private router: Router, private confirmationService: ConfirmationService) {
-      this.getEngineFamily();
+    this.getEngineFamily();
     this.loadPage();
     this.callReqManagementEmpty();
     this.service.lovMasaterList.subscribe((lovMasaterList: any) => {
@@ -175,11 +175,11 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       })
   }
   OpenAs: string = '';
-  cordInbox:boolean = false;
+  cordInbox: boolean = false;
   getopenAs() {
     let routerName = window.location.href.split('/')[window.location.href.split('/').length - 1];
     if (routerName.includes('?')) {
-      if(routerName.includes('openAs')){
+      if (routerName.includes('openAs')) {
         this.OpenAs = routerName.split('?')[1].split('&')[1].split('=')[1]
       } else {
         this.OpenAs = 'customInboxTask';
@@ -251,34 +251,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       this.anexureArr[i].ANNEXURE_PATH = ''
       this.anexureArr[i].ANNEXURE_EXT = ''
     } else {
-      // this.confirmationService.confirm({
-      //   message: 'Are you sure that you want to delete this Image?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
-      //   accept: () => {
-      //     let params = {
-      //       'tuple': {
-      //         'old': {
-      //           'FD_HL_REQUEST_MANAGMENET': {
-      //             'HRM_REF_NO': this.variantsArr[parent].Table12Arr[child].HRM_REF_NO
-      //           }
-      //         },
-      //         'new': {
-      //           'FD_HL_REQUEST_MANAGMENET': {
-      //             'ANNEXURE_NAME': '',
-      //             'ANNEXURE_PATH': '',
-      //             'ANNEXURE_EXT': ''
-      //           }
-      //         }
-      //       }
-      //     }
-      //     this.service.invokeService("UpdateFdHlRequestManagmenet", params, this.namespace, true, false)
-      //       .then((res: any) => {
-      //         this.variantsArr[parent].Table12Arr[child].ANNEXURE_NAME = ''
-      //         this.variantsArr[parent].Table12Arr[child].ANNEXURE_PATH = ''
-      //         this.variantsArr[parent].Table12Arr[child].ANNEXURE_EXT = ''
-      //       })
-      //   },
-      //   reject: () => { }
-      // });
+
     }
   }
   annePopup = 'none';
@@ -563,7 +536,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
         res.forEach((data: any) => {
           this.ENGINE_FAMILY_NO_Arr.push({ RefNo: data.ENGINE_F_REF_ID, ENGINE_FAMILY_NO: data.ENGINE_FAMILY_NO, EMISSION_COMPLIANCE: data.EMISSION_COMPLIANCE })
         })
-        if(this.createRequestForm.controls['ENGINE_FAMILY_NO'].value != ''){
+        if (this.createRequestForm.controls['ENGINE_FAMILY_NO'].value != '') {
           this.ENGINE_FAMILY_NO_Arr.forEach((d: any) => {
             if (d.ENGINE_FAMILY_NO == this.createRequestForm.controls['ENGINE_FAMILY_NO'].value) {
               this.emisionComplaince = d.EMISSION_COMPLIANCE
@@ -612,7 +585,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
         }
       } else {
         let obj11 = res.some((item: any) => {
-         return item.PROCESS_STATUS == '1' && item.CERTIFICATION_TYPE == 'Approval'
+          return item.PROCESS_STATUS == '1' && item.CERTIFICATION_TYPE == 'Approval'
         })
         if (!obj11 && CERTIFICATION_TYPE == 'Amendment' && ENGINE_FAMILY_NO != '') {
           setTimeout(() => {
@@ -729,10 +702,6 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
 
     this.initValue = 0
     this.certDocSize = 0;
-    this.repDocSize = 0;
-    this.appDocSize = 0;
-    this.dragDocSize = 0;
-    this.invDocSize = 0;
 
     let dataObj = { HR_RefNo: arg }
     this.service.invokeService("GetFD_HLDocDetailsByHR_RefNo", dataObj, this.namespace, true, false)
@@ -749,19 +718,19 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
               break;
             case 'Reports':
               this.repdocumentsArr.push(doc)
-              this.repDocSize += parseFloat(doc.DOC_SIZE)
+              this.certDocSize += parseFloat(doc.DOC_SIZE)
               break;
             case 'Approved':
               this.appdocumentsArr.push(doc)
-              this.appDocSize += parseFloat(doc.DOC_SIZE)
+              this.certDocSize += parseFloat(doc.DOC_SIZE)
               break;
             case 'Drawings':
               this.dradocumentsArr.push(doc)
-              this.dragDocSize += parseFloat(doc.DOC_SIZE)
+              this.certDocSize += parseFloat(doc.DOC_SIZE)
               break;
             case 'Invoice':
               this.invdocumentsArr.push(doc)
-              this.invDocSize += parseFloat(doc.DOC_SIZE)
+              this.certDocSize += parseFloat(doc.DOC_SIZE)
               break;
             default:
               break;
@@ -798,7 +767,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
             this.emisionComplaince = d.EMISSION_COMPLIANCE
           }
         })
-    
+
         this.callReqManagement(this.HR_REF_NO);
         this.getFdHlAnnexureDetailsByFamily();
         if (this.datavalidate(this.openAs) == '') {
@@ -869,30 +838,8 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
         this.getFdHlRequestManagement1();
       })
   }
-  // idArrStr: string = ''
+
   nameArrStr: string = ''
-  // getFDHLRequestVariantDetails(arg: any) {
-  //   this.HRV_REF_NOArr = [];
-  //   this.nameArr = [];
-  //   var param = { HR_REF_NO: arg };
-  //   this.service.invokeService("GetFDHLRequestVariantDetails", param, this.namespace, true, false)
-  //     .then((res: any) => {
-  //       this.engineVarient.filter((d: any) => {
-  //         res.forEach((d1: any) => {
-  //           if (d.VARIANT == d1.VARIANT) {
-  //             d.HRV_REF_NO = d1.HRV_REF_NO
-  //             this.HRV_REF_NOArr.push({HRV_REF_NO:d1.HRV_REF_NO,VARIANT:d1.VARIANT})
-  //             this.nameArr.push(d1.VARIANT)
-  //             d.isChecked = true;
-  //             this.variantsArr.push({ HR_REF_NO: d1.HR_REF_NO, HRV_REF_NO: d1.HRV_REF_NO, LOV_DESC: d.VARIANT, Table12Arr: [], Measurment: [], Mode: [{ innerArr: [] }] })
-  //             this.variantsArr1.push({ HR_REF_NO: d1.HR_REF_NO, HRV_REF_NO: d1.HRV_REF_NO, LOV_DESC: d.VARIANT, Table12Arr1: [], Measurment: [], Mode: [{ innerArr: [] }] })
-  //           }
-  //         })
-  //       })
-  //       this.getFdHlRequestManagement();
-  //       this.getFdHlRequestManagement1();
-  //     })
-  // }
 
   async saveVariants() {
     let ParamTuple: {}[] = [];
@@ -1050,10 +997,10 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       }, 0);
       this.mainDocSpinner = false;
     } else {
-      if (this.initValue + parseFloat(this.file.size) / 1024 / 1024 > 50) {
+      if (this.initValue + parseFloat(this.file.size) / 1024 / 1024 > 100) {
         setTimeout(() => {
           this.call_modal = true;
-          this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 50MB !', active: this.call_modal };
+          this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 100MB !', active: this.call_modal };
         }, 0);
         this.mainDocSpinner = false;
         return;
@@ -1103,7 +1050,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       this.certSpinner = false;
     }
     else {
-      if (this.certDocSize + parseFloat(this.certfile.size) / 1024 / 1024 > 50) {
+      if (this.certDocSize + parseFloat(this.certfile.size) / 1024 / 1024 > 200) {
         setTimeout(() => {
           this.call_modal = true;
           this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 50MB !', active: this.call_modal };
@@ -1154,7 +1101,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       this.repSpinner = false;
     }
     else {
-      if (this.repDocSize + parseFloat(this.repfile.size) / 1024 / 1024 > 50) {
+      if (this.certDocSize + parseFloat(this.repfile.size) / 1024 / 1024 > 200) {
         setTimeout(() => {
           this.call_modal = true;
           this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 50MB !', active: this.call_modal };
@@ -1165,7 +1112,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       this.service.uploadFile("UploadFDHLDocumnets", this.repfile, [], this.namespace, false, false)
         .then((resDocPath: any) => {
           this.repSpinner = false;
-          this.repDocSize = this.repDocSize + parseFloat(this.repfile.size) / 1024 / 1024
+          this.certDocSize = this.certDocSize + parseFloat(this.repfile.size) / 1024 / 1024
           this.repdocumentsArr.push({
             'DOC_NAME': this.service.datavalidate(this.repfileName),
             "DOC_PATH": resDocPath,
@@ -1205,7 +1152,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       this.appSpinner = false;
     }
     else {
-      if (this.appDocSize + parseFloat(this.appfile.size) / 1024 / 1024 > 50) {
+      if (this.certDocSize + parseFloat(this.appfile.size) / 1024 / 1024 > 200) {
         setTimeout(() => {
           this.call_modal = true;
           this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 50MB !', active: this.call_modal };
@@ -1216,7 +1163,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       this.service.uploadFile("UploadFDHLDocumnets", this.appfile, [], this.namespace, false, false)
         .then((resDocPath: any) => {
           this.appSpinner = false;
-          this.appDocSize = this.appDocSize + parseFloat(this.appfile.size) / 1024 / 1024
+          this.certDocSize = this.certDocSize + parseFloat(this.appfile.size) / 1024 / 1024
           this.appdocumentsArr.push({
             'DOC_NAME': this.service.datavalidate(this.appfileName),
             "DOC_PATH": resDocPath,
@@ -1256,7 +1203,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       this.dragSpinner = false;
     }
     else {
-      if (this.dragDocSize + parseFloat(this.drafile.size) / 1024 / 1024 > 50) {
+      if (this.certDocSize + parseFloat(this.drafile.size) / 1024 / 1024 > 200) {
         setTimeout(() => {
           this.call_modal = true;
           this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 50MB !', active: this.call_modal };
@@ -1267,7 +1214,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       this.service.uploadFile("UploadFDHLDocumnets", this.drafile, [], this.namespace, false, false)
         .then((resDocPath: any) => {
           this.dragSpinner = false;
-          this.dragDocSize = this.dragDocSize + parseFloat(this.drafile.size) / 1024 / 1024
+          this.certDocSize = this.certDocSize + parseFloat(this.drafile.size) / 1024 / 1024
           this.dradocumentsArr.push({
             'DOC_NAME': this.service.datavalidate(this.drafileName),
             "DOC_PATH": resDocPath,
@@ -1307,7 +1254,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       this.invSpinner = false;
     }
     else {
-      if (this.invDocSize + parseFloat(this.invfile.size) / 1024 / 1024 > 50) {
+      if (this.certDocSize + parseFloat(this.invfile.size) / 1024 / 1024 > 200) {
         setTimeout(() => {
           this.call_modal = true;
           this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 50MB !', active: this.call_modal };
@@ -1318,7 +1265,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       this.service.uploadFile("UploadFDHLDocumnets", this.invfile, [], this.namespace, false, false)
         .then((resDocPath: any) => {
           this.invSpinner = false;
-          this.invDocSize = this.invDocSize + parseFloat(this.invfile.size) / 1024 / 1024
+          this.certDocSize = this.certDocSize + parseFloat(this.invfile.size) / 1024 / 1024
           this.invdocumentsArr.push({
             'DOC_NAME': this.service.datavalidate(this.invfileName),
             "DOC_PATH": resDocPath,
@@ -1355,13 +1302,13 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
         message: 'Are you sure that you want to delele this file?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
         accept: () => {
           this.gridDeleteFile(this.repdocumentsArr[i].DOC_REF_NO);
-          this.repDocSize = this.repDocSize - parseFloat(this.repdocumentsArr[i].DOC_SIZE)
+          this.certDocSize = this.certDocSize - parseFloat(this.repdocumentsArr[i].DOC_SIZE)
           this.repdocumentsArr.splice(i, 1)
         },
         reject: () => { }
       });
     } else {
-      this.repDocSize = this.repDocSize - parseFloat(this.repdocumentsArr[i].DOC_SIZE)
+      this.certDocSize = this.certDocSize - parseFloat(this.repdocumentsArr[i].DOC_SIZE)
       this.repdocumentsArr.splice(i, 1)
     }
   }
@@ -1371,13 +1318,13 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
         message: 'Are you sure that you want to delele this file?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
         accept: () => {
           this.gridDeleteFile(this.appdocumentsArr[i].DOC_REF_NO);
-          this.appDocSize = this.appDocSize - parseFloat(this.appdocumentsArr[i].DOC_SIZE)
+          this.certDocSize = this.certDocSize - parseFloat(this.appdocumentsArr[i].DOC_SIZE)
           this.appdocumentsArr.splice(i, 1)
         },
         reject: () => { }
       });
     } else {
-      this.appDocSize = this.appDocSize - parseFloat(this.appdocumentsArr[i].DOC_SIZE)
+      this.certDocSize = this.certDocSize - parseFloat(this.appdocumentsArr[i].DOC_SIZE)
       this.appdocumentsArr.splice(i, 1)
     }
   }
@@ -1387,13 +1334,13 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
         message: 'Are you sure that you want to delele this file?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
         accept: () => {
           this.gridDeleteFile(this.dradocumentsArr[i].DOC_REF_NO);
-          this.dragDocSize = this.dragDocSize - parseFloat(this.dradocumentsArr[i].DOC_SIZE)
+          this.certDocSize = this.certDocSize - parseFloat(this.dradocumentsArr[i].DOC_SIZE)
           this.dradocumentsArr.splice(i, 1)
         },
         reject: () => { }
       });
     } else {
-      this.dragDocSize = this.dragDocSize - parseFloat(this.dradocumentsArr[i].DOC_SIZE)
+      this.certDocSize = this.certDocSize - parseFloat(this.dradocumentsArr[i].DOC_SIZE)
       this.dradocumentsArr.splice(i, 1)
     }
   }
@@ -1403,13 +1350,13 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
         message: 'Are you sure that you want to delele this file?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
         accept: () => {
           this.gridDeleteFile(this.invdocumentsArr[i].DOC_REF_NO);
-          this.invDocSize = this.invDocSize - parseFloat(this.invdocumentsArr[i].DOC_SIZE)
+          this.certDocSize = this.certDocSize - parseFloat(this.invdocumentsArr[i].DOC_SIZE)
           this.invdocumentsArr.splice(i, 1)
         },
         reject: () => { }
       });
     } else {
-      this.invDocSize = this.invDocSize - parseFloat(this.invdocumentsArr[i].DOC_SIZE)
+      this.certDocSize = this.certDocSize - parseFloat(this.invdocumentsArr[i].DOC_SIZE)
       this.invdocumentsArr.splice(i, 1)
     }
   }
@@ -1735,88 +1682,183 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
         return;
       }
     }
-    if (this.datavalidate(this.HR_REF_NO) != '') {
-      dataObj = {
-        tuple: {
-          old: {
-            FD_HL_REQUEST_DETAILS: {
-              HR_REF_NO: this.HR_REF_NO
+    if (arg == 'submit' || arg == 'clone') {
+      var msg = arg == 'submit' ? ' Are you sure you want to submit the data?' :
+        arg == 'clone' ? ' Are you sure you want to clone the data?' : ''
+      this.confirmationService.confirm({
+        message: msg, header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          if (this.datavalidate(this.HR_REF_NO) != '') {
+            dataObj = {
+              tuple: {
+                old: {
+                  FD_HL_REQUEST_DETAILS: {
+                    HR_REF_NO: this.HR_REF_NO
+                  }
+                },
+                new: {
+                  FD_HL_REQUEST_DETAILS: {
+                    'LOCATION': this.datavalidate(this.createRequestForm.controls['LOCATION'].value),
+                    'CERTIFICATION_TYPE': this.datavalidate(this.createRequestForm.controls['CERTIFICATION_TYPE'].value),
+                    'ENGINE_FAMILY_NO': this.datavalidate(this.createRequestForm.controls['ENGINE_FAMILY_NO'].value),
+                    'WBS': this.datavalidate(this.createRequestForm.controls['WBS'].value),
+                    'COST_CENTER': this.datavalidate(this.createRequestForm.controls['COST_CENTER'].value),
+                    'REQUEST_NO': this.routeName == 'clone' ? this.newREQUEST_NO : this.REQUEST_NO,
+                    'CLONE_REQUEST_NO': this.routeName == 'clone' ? this.CLONE_REQUEST_NO : '',
+                    'REMARKS': this.remarks,
+                    'CURRENT_STAGE': this.actStage,
+                    'SIGNATURE': this.regardsArr[0].data,
+                    'REGA_NAME': this.regardsArr[1].data,
+                    'DESIGNATION': this.regardsArr[2].data,
+                    'DEPARTMENT': this.regardsArr[3].data,
+                    'COMPANY_NAME': this.regardsArr[4].data,
+                    'HR_REGARDS': this.regards,
+                    'DOCUMENT_NO': this.DOCUMENT_NO,
+                    'REQUEST_DATE': arg == 'submit' ? this.datepipe.transform(new Date(), 'yyyy-MM-dd') : ''
+                  }
+                }
+              }
             }
-          },
-          new: {
-            FD_HL_REQUEST_DETAILS: {
-              'LOCATION': this.datavalidate(this.createRequestForm.controls['LOCATION'].value),
-              'CERTIFICATION_TYPE': this.datavalidate(this.createRequestForm.controls['CERTIFICATION_TYPE'].value),
-              'ENGINE_FAMILY_NO': this.datavalidate(this.createRequestForm.controls['ENGINE_FAMILY_NO'].value),
-              'WBS': this.datavalidate(this.createRequestForm.controls['WBS'].value),
-              'COST_CENTER': this.datavalidate(this.createRequestForm.controls['COST_CENTER'].value),
-              'REQUEST_NO': this.routeName == 'clone' ? this.newREQUEST_NO : this.REQUEST_NO,
-              'CLONE_REQUEST_NO': this.routeName == 'clone' ? this.CLONE_REQUEST_NO : '',
-              'REMARKS': this.remarks,
-              'CURRENT_STAGE': this.actStage,
-              'SIGNATURE': this.regardsArr[0].data,
-              'REGA_NAME': this.regardsArr[1].data,
-              'DESIGNATION': this.regardsArr[2].data,
-              'DEPARTMENT': this.regardsArr[3].data,
-              'COMPANY_NAME': this.regardsArr[4].data,
-              'HR_REGARDS': this.regards,
-              'DOCUMENT_NO': this.DOCUMENT_NO,
-              'REQUEST_DATE': arg == 'submit' ? this.datepipe.transform(new Date(), 'yyyy-MM-dd') : ''
+          }
+          else {
+            dataObj = {
+              tuple: {
+                new: {
+                  FD_HL_REQUEST_DETAILS: {
+                    'HR_REF_NO': '',
+                    'LOCATION': this.datavalidate(this.createRequestForm.controls['LOCATION'].value),
+                    'CERTIFICATION_TYPE': this.datavalidate(this.createRequestForm.controls['CERTIFICATION_TYPE'].value),
+                    'ENGINE_FAMILY_NO': this.datavalidate(this.createRequestForm.controls['ENGINE_FAMILY_NO'].value),
+                    'WBS': this.datavalidate(this.createRequestForm.controls['WBS'].value),
+                    'COST_CENTER': this.datavalidate(this.createRequestForm.controls['COST_CENTER'].value),
+                    'INITIATOR_ID': this.loginUserID,
+                    'INITIATION_DATE': this.datepipe.transform(new Date(), 'yyyy-MM-dd'),
+                    'PROCESS_STATUS': '0',
+                    'CLONE_REQUEST_NO': this.routeName == 'clone' ? this.CLONE_REQUEST_NO : '',
+                    'REMARKS': this.remarks,
+                    'CHAPTER2_REVISION': this.reguChapter2,
+                    'CL_REVISION': this.reguCovering,
+                    'TABLE4G_REVISION': this.reguTable4G,
+                    'TABLE12_REVISION': this.reguTable12,
+                    'CURRENT_STAGE': this.actStage,
+                    'SIGNATURE': this.regardsArr[0].data,
+                    'REGA_NAME': this.regardsArr[1].data,
+                    'DESIGNATION': this.regardsArr[2].data,
+                    'DEPARTMENT': this.regardsArr[3].data,
+                    'COMPANY_NAME': this.regardsArr[4].data,
+                    'HR_REGARDS': this.regards,
+                    'DOCUMENT_NO': this.DOCUMENT_NO,
+                    'REQUEST_DATE': arg == 'submit' ? this.datepipe.transform(new Date(), 'yyyy-MM-dd') : ''
+                  }
+                }
+              }
+            }
+          }
+          this.service.spinner.next(true);
+          this.service.invokeService("UpdateFdHlRequestDetails", dataObj, this.namespace, true, false)
+            .then((res: any) => {
+              this.HR_REF_NO = res[0].HR_REF_NO
+              let obj = { 'HR_REF_NO': this.HR_REF_NO, 'actRole': this.actRole, 'actStage': this.actStage }
+              this.service.sharingData(obj, 'HR_REF_NO');
+              this.service.createPageEvents.next('');
+              this.REQUEST_NO = res[0].REQUEST_NO
+              this.newREQUEST_NO = res[0].REQUEST_NO;
+              this.saveVariants();
+              this.saveAnnexure('');
+            },
+              (err) => {
+                console.log('Error occured! While saving the data')
+                this.service.spinner.next(false);
+              })
+        },
+        reject: () => {
+
+        }
+      });
+    } else if (arg == 'save') {
+      if (this.datavalidate(this.HR_REF_NO) != '') {
+        dataObj = {
+          tuple: {
+            old: {
+              FD_HL_REQUEST_DETAILS: {
+                HR_REF_NO: this.HR_REF_NO
+              }
+            },
+            new: {
+              FD_HL_REQUEST_DETAILS: {
+                'LOCATION': this.datavalidate(this.createRequestForm.controls['LOCATION'].value),
+                'CERTIFICATION_TYPE': this.datavalidate(this.createRequestForm.controls['CERTIFICATION_TYPE'].value),
+                'ENGINE_FAMILY_NO': this.datavalidate(this.createRequestForm.controls['ENGINE_FAMILY_NO'].value),
+                'WBS': this.datavalidate(this.createRequestForm.controls['WBS'].value),
+                'COST_CENTER': this.datavalidate(this.createRequestForm.controls['COST_CENTER'].value),
+                'REQUEST_NO': this.routeName == 'clone' ? this.newREQUEST_NO : this.REQUEST_NO,
+                'CLONE_REQUEST_NO': this.routeName == 'clone' ? this.CLONE_REQUEST_NO : '',
+                'REMARKS': this.remarks,
+                'CURRENT_STAGE': this.actStage,
+                'SIGNATURE': this.regardsArr[0].data,
+                'REGA_NAME': this.regardsArr[1].data,
+                'DESIGNATION': this.regardsArr[2].data,
+                'DEPARTMENT': this.regardsArr[3].data,
+                'COMPANY_NAME': this.regardsArr[4].data,
+                'HR_REGARDS': this.regards,
+                'DOCUMENT_NO': this.DOCUMENT_NO,
+                'REQUEST_DATE': ''
+              }
             }
           }
         }
       }
-    }
-    else {
-      dataObj = {
-        tuple: {
-          new: {
-            FD_HL_REQUEST_DETAILS: {
-              'HR_REF_NO': '',
-              'LOCATION': this.datavalidate(this.createRequestForm.controls['LOCATION'].value),
-              'CERTIFICATION_TYPE': this.datavalidate(this.createRequestForm.controls['CERTIFICATION_TYPE'].value),
-              'ENGINE_FAMILY_NO': this.datavalidate(this.createRequestForm.controls['ENGINE_FAMILY_NO'].value),
-              'WBS': this.datavalidate(this.createRequestForm.controls['WBS'].value),
-              'COST_CENTER': this.datavalidate(this.createRequestForm.controls['COST_CENTER'].value),
-              'INITIATOR_ID': this.loginUserID,
-              'INITIATION_DATE': this.datepipe.transform(new Date(), 'yyyy-MM-dd'),
-              'PROCESS_STATUS': '0',
-              'CLONE_REQUEST_NO': this.routeName == 'clone' ? this.CLONE_REQUEST_NO : '',
-              'REMARKS': this.remarks,
-              'CHAPTER2_REVISION': this.reguChapter2,
-              'CL_REVISION': this.reguCovering,
-              'TABLE4G_REVISION': this.reguTable4G,
-              'TABLE12_REVISION': this.reguTable12,
-              'CURRENT_STAGE': this.actStage,
-              'SIGNATURE': this.regardsArr[0].data,
-              'REGA_NAME': this.regardsArr[1].data,
-              'DESIGNATION': this.regardsArr[2].data,
-              'DEPARTMENT': this.regardsArr[3].data,
-              'COMPANY_NAME': this.regardsArr[4].data,
-              'HR_REGARDS': this.regards,
-              'DOCUMENT_NO': this.DOCUMENT_NO,
-              'REQUEST_DATE': arg == 'submit' ? this.datepipe.transform(new Date(), 'yyyy-MM-dd') : ''
+      else {
+        dataObj = {
+          tuple: {
+            new: {
+              FD_HL_REQUEST_DETAILS: {
+                'HR_REF_NO': '',
+                'LOCATION': this.datavalidate(this.createRequestForm.controls['LOCATION'].value),
+                'CERTIFICATION_TYPE': this.datavalidate(this.createRequestForm.controls['CERTIFICATION_TYPE'].value),
+                'ENGINE_FAMILY_NO': this.datavalidate(this.createRequestForm.controls['ENGINE_FAMILY_NO'].value),
+                'WBS': this.datavalidate(this.createRequestForm.controls['WBS'].value),
+                'COST_CENTER': this.datavalidate(this.createRequestForm.controls['COST_CENTER'].value),
+                'INITIATOR_ID': this.loginUserID,
+                'INITIATION_DATE': this.datepipe.transform(new Date(), 'yyyy-MM-dd'),
+                'PROCESS_STATUS': '0',
+                'CLONE_REQUEST_NO': this.routeName == 'clone' ? this.CLONE_REQUEST_NO : '',
+                'REMARKS': this.remarks,
+                'CHAPTER2_REVISION': this.reguChapter2,
+                'CL_REVISION': this.reguCovering,
+                'TABLE4G_REVISION': this.reguTable4G,
+                'TABLE12_REVISION': this.reguTable12,
+                'CURRENT_STAGE': this.actStage,
+                'SIGNATURE': this.regardsArr[0].data,
+                'REGA_NAME': this.regardsArr[1].data,
+                'DESIGNATION': this.regardsArr[2].data,
+                'DEPARTMENT': this.regardsArr[3].data,
+                'COMPANY_NAME': this.regardsArr[4].data,
+                'HR_REGARDS': this.regards,
+                'DOCUMENT_NO': this.DOCUMENT_NO,
+                'REQUEST_DATE': ''
+              }
             }
           }
         }
       }
+      this.service.spinner.next(true);
+      this.service.invokeService("UpdateFdHlRequestDetails", dataObj, this.namespace, true, false)
+        .then((res: any) => {
+          this.HR_REF_NO = res[0].HR_REF_NO
+          let obj = { 'HR_REF_NO': this.HR_REF_NO, 'actRole': this.actRole, 'actStage': this.actStage }
+          this.service.sharingData(obj, 'HR_REF_NO');
+          this.service.createPageEvents.next('');
+          this.REQUEST_NO = res[0].REQUEST_NO
+          this.newREQUEST_NO = res[0].REQUEST_NO;
+          this.saveVariants();
+          this.saveAnnexure('');
+        },
+          (err) => {
+            console.log('Error occured! While saving the data')
+            this.service.spinner.next(false);
+          })
     }
-    this.service.spinner.next(true);
-    this.service.invokeService("UpdateFdHlRequestDetails", dataObj, this.namespace, true, false)
-      .then((res: any) => {
-        this.HR_REF_NO = res[0].HR_REF_NO
-        let obj = { 'HR_REF_NO': this.HR_REF_NO, 'actRole': this.actRole, 'actStage': this.actStage }
-        this.service.sharingData(obj, 'HR_REF_NO');
-        this.service.createPageEvents.next('');
-        this.REQUEST_NO = res[0].REQUEST_NO
-        this.newREQUEST_NO = res[0].REQUEST_NO;
-        this.saveVariants();
-        this.saveAnnexure('');
-      },
-        (err) => {
-          console.log('Error occured! While saving the data')
-          this.service.spinner.next(false);
-        })
   }
   saveFooter() {
     this.call_modal = false;
@@ -2047,7 +2089,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       if (this.datavalidate(obj.HRV_REF_NO) == '') {
       } else {
         this.confirmationService.confirm({
-          message: 'Probably loose the saved data. Do you want to proceed?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
+          message: 'Probably loss the saved data. Do you want to proceed?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
           accept: () => {
             let param = {
               'HRV_REF_NO': obj.HRV_REF_NO,

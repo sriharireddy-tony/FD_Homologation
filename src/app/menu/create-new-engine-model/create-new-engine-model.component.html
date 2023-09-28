@@ -32,7 +32,7 @@
                         </select>
                     </div>
                     <div class="col-lg-3">
-                        <label><b>Platform Name</b></label>
+                        <label><b>Platform Name</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
                         <!-- <input type="text" class="form-control" formControlName="PLATFORM" [attr.disabled]="true"> -->
                         <select class="form-select" formControlName="PLATFORM"
                             [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('PLATFORM')?.invalid}"

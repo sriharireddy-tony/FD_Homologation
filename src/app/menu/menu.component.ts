@@ -117,7 +117,8 @@ export class MenuComponent implements OnInit, AfterViewInit {
         })
         this.service.tabsArr.next(this.tabsArr)
       })
-  }
+  };
+  
   tabsArr: any = [];
   tabHide(arg: string) {
     if (this.tabsArr.includes(arg)) {

@@ -209,9 +209,10 @@ export class CreateMasterFormComponent implements OnInit {
         }
       }
     }
-
+    this.service.spinner.next(true);
     this.service.invokeService("UpdateFdHlAttributesM", dataObj, this.namespace, true, false)
       .then((res: any) => {
+        this.service.spinner.next(false);
         this.ATTR_REF_ID = res[0].ATTR_REF_ID
         this.call_modal = true;
         let text = this.disUpdate ? 'Master Attributes Updated Successfully' : 'New Master Attributes Created Successfully'

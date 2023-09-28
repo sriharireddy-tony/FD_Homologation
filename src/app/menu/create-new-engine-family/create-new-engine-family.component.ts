@@ -248,8 +248,7 @@ getAllData(){
           }
         }
       }
-    }
-    else {
+    } else {
       dataObj = {
         tuple: {
           new: {
@@ -272,8 +271,10 @@ getAllData(){
         }
       }
     }
+    this.service.spinner.next(true);
     this.service.invokeService("UpdateFdHlEngineFamilyM", dataObj, this.namespace, true, false)
       .then((res: any) => {
+        this.service.spinner.next(false);
         this.REF_ID = res[0].ENGINE_F_REF_ID
         this.ENGINE_FAMILY_NO = res[0].ENGINE_FAMILY_NO
         let dObj = {ENGINE_F_REF_ID:this.REF_ID}

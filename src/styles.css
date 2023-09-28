@@ -321,11 +321,11 @@ p-confirmdialog>div>div>div.p-dialog-footer>button.p-button-raised.p-confirm-dia
     width: 100vw !important;
     height: 100vh !important;
     z-index: 100 !important;
-    background: #00000066 !important;
+    background: #00000024 !important;
 }
 .p-progress-spinner-svg{
-    height:0% !important;
-    width: 0% !important;
+    height:20% !important;
+    width: 20% !important;
     top: 0% !important;
 }
 .p-multiselect {

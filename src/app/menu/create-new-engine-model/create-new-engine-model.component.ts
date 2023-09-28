@@ -41,7 +41,7 @@ export class CreateNewEngineModelComponent implements OnInit {
 
   engineModelForm = this.fb.group({
     APPLICATION_TYPE: ['', Validators.required],
-    PLATFORM: [''],
+    PLATFORM: ['', Validators.required],
     FIE: [''],
     DISPLACEMENT_L: ['', Validators.required],
     ASPIRATION_TYPE: [''],
@@ -215,7 +215,8 @@ export class CreateNewEngineModelComponent implements OnInit {
         res.forEach((data: any) => {
           tempArr.push({
             APPLICATION_TYPE: this.datavalidate(data.APPLICATION_TYPE), ENGINE_FAMILY_NO: this.datavalidate(data.ENGINE_FAMILY_NO),
-            DISPLACEMENT_L: this.datavalidate(data.DISPLACEMENT_L), POWER_HP: this.datavalidate(Math.round(parseFloat(data.POWER_HP)).toString())
+            DISPLACEMENT_L: this.datavalidate(data.DISPLACEMENT_L), POWER_HP: this.datavalidate(Math.round(parseFloat(data.POWER_HP)).toString()),
+            MG : this.datavalidate(data.COMPANY), addiInform : this.datavalidate(data.ADDITIONAL_INFO)
           })
           // if(this.datavalidate(this.REF_ID)!==''){
           //   if(data.VARIANT==this.engineModelForm.value.VARIANT && data.ENGINE_FAMILY_NO==this.engineFamilyNo){
@@ -239,6 +240,8 @@ export class CreateNewEngineModelComponent implements OnInit {
     arr.push(this.datavalidate(this.engineFamilyNo))
     arr.push(this.datavalidate(this.engineModelForm.controls['DISPLACEMENT_L'].value))
     arr.push(this.datavalidate(Math.round(parseFloat(power)).toString()))
+    arr.push(this.datavalidate(this.engineModelForm.controls['MG'].value))
+    arr.push(this.datavalidate(this.engineModelForm.controls['addiInform'].value))
     this.uniquebool = this.allUniqueStrArr.includes(arr.toString()) ? true : false;
     // return (this.allUniqueStrArr.includes(arr.toString()) ? true : false)
   }
@@ -349,9 +352,10 @@ export class CreateNewEngineModelComponent implements OnInit {
         }
       }
     }
-
+    this.service.spinner.next(true);
     this.service.invokeService("UpdateFdHlEngineModelM", dataObj, this.namespace, true, false)
       .then((res: any) => {
+        this.service.spinner.next(false);
         this.REF_ID = res[0].ENGINE_M_REF_ID
         this.ENGINE_MODEL_NO = res[0].ENGINE_MODEL_NO
         // alert('data inserted');
@@ -361,7 +365,7 @@ export class CreateNewEngineModelComponent implements OnInit {
 
           })
         this.call_modal = true;
-        let obj: any = { 'text': `New Engine Model Created Succesfully`, 'text1': `Serial Number`, 'text2': `${res[0].ENGINE_MODEL_NO}`, active: this.call_modal, from: 'modelSave' };
+        let obj: any = { 'text': `New Engine Model Created Succesfully`, 'text1': `Model Name`, 'text2': `${res[0].ENGINE_MODEL_NO}`, active: this.call_modal, from: 'modelSave' };
         this.data_send = obj;
       },
         (err) => {
