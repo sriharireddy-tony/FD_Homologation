@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MenuComponent } from '../menu.component';
 import { DatePipe, Location } from '@angular/common';
 import { Services } from 'src/app/services/services';
@@ -14,7 +14,7 @@ declare var $: any
   templateUrl: './create-new-engine-model.component.html',
   styleUrls: ['./create-new-engine-model.component.css']
 })
-export class CreateNewEngineModelComponent implements OnInit {
+export class CreateNewEngineModelComponent implements OnInit,OnDestroy {
 
   namespace: string = "http://schemas.cordys.com/FD_HL_WSPackage";
   ENGINE_M_REF_ID: string = '';
@@ -151,18 +151,16 @@ export class CreateNewEngineModelComponent implements OnInit {
       ENGINE_FAMILY_NO: ENGINE_FAMILY_NO,
       PLATFORM: PLATFORM
     }
-    try {
       await this.service.invokeService("GetFDHLPlatformsLovByEngineFamily", obj, this.namespace, true, false).then((res:any)=>{
         this.enginePlatform = res;
-        if(res.length == '1'){
-          this.engineModelForm.patchValue({PLATFORM: this.datavalidate(res[0].LOV_ID)})
-        } else {
-          // this.engineModelForm.patchValue({PLATFORM: ''})
-        }
+        setTimeout(()=>{
+          if(res.length == '1'){
+            this.engineModelForm.patchValue({PLATFORM: this.datavalidate(res[0].LOV_ID)})
+          } else {
+            this.engineModelForm.patchValue({PLATFORM: ''})
+          }
+        },0)
       })
-    } catch (error) {
-      console.error('Error:', error);
-    }
   }
 
   engineModelById: any = [];

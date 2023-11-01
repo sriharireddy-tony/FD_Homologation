@@ -74,6 +74,7 @@ export class Services {
       });
   
     }
+    
   public uploadFile(methodname: string, file: File, fileFormats: any, namespace: string = '',
     isAsync: any = undefined, showLoadingIndicator: any = undefined) {
     let fileContent: any;
@@ -349,6 +350,7 @@ ARAIFlag = new Subject();
   OpenAs = new BehaviorSubject<boolean>(false);
   spinner = new BehaviorSubject<boolean>(false);
   cloneHRNo = new Subject();
+  SaveUpdateHRNo = new Subject();
   // masterAttributes:any = new Subject();
 
   lovMasaterList = new BehaviorSubject<any>([]);

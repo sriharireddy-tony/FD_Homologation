@@ -3,7 +3,7 @@
         <button class="btn border-0 mt-1 d-flex" (click)="back()" type="button"><i class="fa-solid fa-circle-arrow-left mt-1"
                 style="font-size:22px"></i> &nbsp;
                 <b class="fs-5" *ngIf="datavalidate(ATTR_REF_ID)==''">Create New Master Form</b>
-                <b class="fs-5"  *ngIf="datavalidate(ATTR_REF_ID)!=''">{{ATTR_NAME}}</b>
+                <b class="fs-5" style="max-height: 30px;overflow-y: auto;" [title]="ATTR_NAME"  *ngIf="datavalidate(ATTR_REF_ID)!=''">{{ATTR_NAME}}</b>
             </button>
     </div>
 
@@ -27,15 +27,16 @@
                         <label><b>Attribute characteristics</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
                         <select class="form-select" formControlName="ATTR_CHARACTERISTICS" [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('ATTR_CHARACTERISTICS')?.invalid}" 
                         [attr.disabled]="disUpdate||null" (change)="AttrCharSelect($event)">
-                            <option value=null>Select Attribute characteristics</option>
+                            <option value=''>Select Attribute characteristics</option>
                             <option [value]="item.LOV_ID" *ngFor="let item of AttributeChar">{{item.LOV_DESC}}</option>
                         </select>
                     </div>
 
                     <div class="col-lg-3">
                         <label><b>Document Name</b><sup *ngIf="!disUpdate"><b>*</b></sup></label>
-                        <select class="form-select" formControlName="DOUMENT_NAME" [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('DOUMENT_NAME')?.invalid}" (change)="docDropSelect($event)" [attr.disabled]="disUpdate||null">
-                            <option value=null>Select Document Name</option>
+                        <select class="form-select" formControlName="DOUMENT_NAME" [ngClass]="{'borderRed':isSubmitted && engineModelForm.get('DOUMENT_NAME')?.invalid}"
+                        (change)="docDropSelect($event)" [attr.disabled]="disUpdate||null">
+                            <option value=''>Select Document Name</option>
                             <option [value]="item.REPORT_NAME" *ngFor="let item of docNameDropArr">{{item.REPORT_NAME}}</option>
                         </select>
                     </div>

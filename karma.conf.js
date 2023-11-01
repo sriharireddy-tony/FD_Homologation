@@ -1,47 +1,41 @@
-// Karma configuration file, see link for more information
-// https://karma-runner.github.io/1.0/config/configuration-file.html
-
 module.exports = function (config) {
   config.set({
-    files: ['src/test.ts'],
-    basePath: '',
-    frameworks: ['jasmine', '@angular-devkit/build-angular','jquery-3.7.0', 'jasmine-jquery'],
-    plugins: [
-      require('karma-jasmine'),
-      require('karma-chrome-launcher'),
-      require('karma-jasmine-html-reporter'),
-      require('karma-coverage'),
-      require('@angular-devkit/build-angular/plugins/karma'),
-      require('karma-jquery'),
-      require('karma-jasmine-jquery')
+    files: ['src/test.ts'], // List of files to include in the test suite
+    basePath: '', // Base path for files, usually set to project root
+    frameworks: ['jasmine', '@angular-devkit/build-angular'], // Testing frameworks and plugins
+    plugins: [ // Karma plugins used in the configuration
+      require('karma-jasmine'), // Jasmine framework
+      require('karma-chrome-launcher'), // Chrome browser launcher
+      require('karma-jasmine-html-reporter'), // Jasmine HTML reporter
+      require('karma-coverage'), // Code coverage reporter
+      require('@angular-devkit/build-angular/plugins/karma'), // Angular plugin
+      // require('karma-jquery'), // jQuery plugin (used for jQuery fixtures)
+      // require('karma-jasmine-jquery') // Jasmine-jQuery plugin
     ],
     client: {
       jasmine: {
-        // you can add configuration options for Jasmine here
-        // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
-        // for example, you can disable the random execution with `random: false`
-        // or set a specific seed with `seed: 4321`
+        // Jasmine configuration options can be placed here
       },
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+      clearContext: false // Leave Jasmine Spec Runner output visible in browser
     },
     jasmineHtmlReporter: {
-      suppressAll: true // removes the duplicated traces
+      suppressAll: true // Remove duplicated traces in HTML reporter
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/fd-homologation'),
-      subdir: '.',
+      dir: require('path').join(__dirname, './coverage/fd-homologation'), // Directory for coverage reports
+      subdir: '.', // Subdirectory within the coverage directory
       reporters: [
-        { type: 'html' },
-        { type: 'text-summary' }
+        { type: 'html' }, // HTML coverage report
+        { type: 'text-summary' } // Text summary coverage report
       ]
     },
-    reporters: ['progress', 'kjhtml'],
-    port: 9876,
-    colors: true,
-    logLevel: config.LOG_INFO,
-    autoWatch: true,
-    browsers: ['Chrome'],
-    singleRun: false,
-    restartOnFileChange: true
+    reporters: ['progress', 'kjhtml'], // Reporters used for Karma output
+    port: 9876, // Port where Karma runs
+    colors: true, // Enable colors in output
+    logLevel: config.LOG_INFO, // Log level for Karma
+    autoWatch: true, // Automatically watch files for changes
+    browsers: ['Chrome'], // Browsers to use for testing
+    singleRun: false, // Run tests once and exit
+    restartOnFileChange: true // Restart Karma on file changes
   });
 };

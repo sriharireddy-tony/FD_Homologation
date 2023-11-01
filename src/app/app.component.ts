@@ -27,10 +27,15 @@ export class AppComponent implements OnInit {
   actStag:string='';
   saveBtn:string='';
   spinner:boolean = false;
+  SaveUpdateHRNo:string ='';
 
   constructor(private service: Services, private router: Router) {
     this.service.spinner.subscribe((bool:any)=>{
       this.spinner = bool;
+    })
+    this.service.SaveUpdateHRNo.subscribe((SaveUpdateHRNo:any)=>{
+      this.SaveUpdateHRNo = SaveUpdateHRNo;
+      this.saveBtn = this.datavalidate(this.SaveUpdateHRNo) == ''? 'Save' : 'Update'
     })
     this.service.HR_REF_NO.subscribe((obj: any) => {
       let temp = window.location.href.split('/')[window.location.href.split('/').length - 1]
@@ -44,8 +49,8 @@ export class AppComponent implements OnInit {
     })
     // if ($.cordys.authentication.sso.isAuthenticated()) {
       $.cordys.authentication.getUser().done((userObject: any) => {
-        let param = { userId: userObject.userName};
           if(this.datavalidate(userObject.userName)!='' && this.datavalidate(userObject.userName)!='anonymous'){
+            let param = { userId: userObject.userName};
           this.service.invokeService("GetFDHLLoginUser", param, this.namespace, true, false)
           .then((response: any) => {
               this.service.sharingData(userObject.userName, 'loginUserID');
@@ -62,7 +67,6 @@ export class AppComponent implements OnInit {
                 // this.router.navigate(['/home']);
               });
             }
-        
       });
     // } else {
     //   $.cordys.authentication.sso.authenticate('venkat', 'venkat').done(() => {
@@ -164,7 +168,7 @@ cloneHRNo:string='';
     } else {
       this.OpenAs = "";
     }
-    this.saveBtn = this.datavalidate(this.OpenAs)==''? 'Save' : 'Update'
+    this.saveBtn = this.datavalidate(this.SaveUpdateHRNo) == ''? 'Save' : 'Update'
   }
 
   getLovMasterData() {

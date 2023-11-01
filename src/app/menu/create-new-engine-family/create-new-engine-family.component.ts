@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { DatePipe, Location } from '@angular/common';
 import { MenuComponent } from '../menu.component';
 import { AppComponent } from 'src/app/app.component';
@@ -13,7 +13,7 @@ declare var $: any
   templateUrl: './create-new-engine-family.component.html',
   styleUrls: ['./create-new-engine-family.component.css']
 })
-export class CreateNewEngineFamilyComponent implements OnInit {
+export class CreateNewEngineFamilyComponent implements OnInit,OnDestroy {
 
   namespace: string = "http://schemas.cordys.com/FD_HL_WSPackage";
   tabName: any;
@@ -284,7 +284,7 @@ getAllData(){
         })
         this.call_modal =true;
         let text = this.disUpdate ? 'Engine Family Updated Successfully' : 'New Engine Family Created Successfully'
-        let obj:any = {'text':text,'text1':`Serial Number`,'text2':`${res[0].ENGINE_FAMILY_NO}`,active:this.call_modal,from:'familySave'};
+        let obj:any = {'text':text,'text1':`Family Number`,'text2':`${res[0].ENGINE_FAMILY_NO}`,active:this.call_modal,from:'familySave'};
         this.data_send = obj;
       },
         (err) => {

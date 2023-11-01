@@ -147,33 +147,31 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
         })
       })
   }
-  cloneFdHlRequest() {
+ async cloneFdHlRequest() {
+    let flag = false;
     this.call_modal = false;
     let obj = {
       HR_REF_NO: this.HR_REF_NO,
       CHR_REF_NO: this.cloneHRNo,
       CLONE_REQUEST_NO: this.CLONE_REQUEST_NO
     }
-    this.service.invokeService("CloneFdHlRequest", obj, this.namespace, true, false)
-      .then((res: any) => {
+   await this.service.invokeService("CloneFdHlRequest", obj, this.namespace, true, false)
+      .then(async (res: any) => {
         this.service.cloneHRNo.next(this.cloneHRNo)
         this.covering?.getFDHLCoveringLetterDetails();
         this.covering?.getFDHLCLEnClosureDetails();
         this.table12?.getData();
         this.table12?.getFDHLRequestVariantDetails();
-        // this.getFDHLEngineModelsByFamily();
-        // this.getFDHLRequestVariantDetails(this.HR_REF_NO);
-        Promise.all([this.getFDHLRequestDetails(this.HR_REF_NO), this.callReqManagement(this.HR_REF_NO)]).then((res) => {
-          // this.table4g?.getData();
-          // this.table4g?.getMesurment();
-          // this.table4g?.getMode();
-          setTimeout(() => {
-            this.call_modal = true;
-            this.data_send = { text: `New Request Created Successfully`, 'text1': `Request ID`, 'text2': `${this.REQUEST_NO}`, active: this.call_modal };
-          }, 0);
-        })
+      // await Promise.all([this.getFDHLRequestDetails(this.HR_REF_NO)]).then((res) => {
+        this.getFDHLRequestDetails(this.HR_REF_NO);
+        setTimeout(() => {
+          this.call_modal = true;
+          this.data_send = { text: `New Request Created Successfully`, 'text1': `Request ID`, 'text2': `${this.REQUEST_NO}`, active: this.call_modal };
+        }, 2000);
+        // })
       })
   }
+
   OpenAs: string = '';
   cordInbox: boolean = false;
   getopenAs() {
@@ -387,7 +385,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
   clear() {
     if (this.datavalidate(this.HR_REF_NO) == '') {
       this.createRequestForm.patchValue({
-        LOCATION: '',
+        LOCATION: 'Domestic',
         CERTIFICATION_TYPE: '',
         ENGINE_FAMILY_NO: '',
         WBS: '',
@@ -767,7 +765,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
             this.emisionComplaince = d.EMISSION_COMPLIANCE
           }
         })
-
+        this.variantNamesStr();
         this.callReqManagement(this.HR_REF_NO);
         this.getFdHlAnnexureDetailsByFamily();
         if (this.datavalidate(this.openAs) == '') {
@@ -790,6 +788,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
 
   async loadPage() {
     this.activatedRoute.queryParams.subscribe(async (params: any) => {
+      this.service.SaveUpdateHRNo.next('');
       this.HR_REF_NO = params.HR_REF_NO;
       this.taskId = params['taskId'];
       this.openAs = params['openAs'];
@@ -804,6 +803,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
           let varObj = this.actRole + ',' + this.actStage
           this.service.roleStage.next(varObj)
           this.service.actStag.next(this.actStage)
+          this.service.SaveUpdateHRNo.next(this.HR_REF_NO);
           this.getopenAs();
         })
       }
@@ -815,6 +815,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
         this.getFDHLRequestDetails(this.HR_REF_NO);
         this.getFD_HLDocDetailsByHR_RefNo(this.HR_REF_NO);
         this.getFD_HLHistoryDetailsByHR_RefNo();
+        this.service.SaveUpdateHRNo.next(this.HR_REF_NO);
       }
     })
     this.getopenAs();
@@ -1053,7 +1054,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       if (this.certDocSize + parseFloat(this.certfile.size) / 1024 / 1024 > 200) {
         setTimeout(() => {
           this.call_modal = true;
-          this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 50MB !', active: this.call_modal };
+          this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 200MB !', active: this.call_modal };
         }, 0);
         this.certSpinner = false;
         return;
@@ -1104,7 +1105,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       if (this.certDocSize + parseFloat(this.repfile.size) / 1024 / 1024 > 200) {
         setTimeout(() => {
           this.call_modal = true;
-          this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 50MB !', active: this.call_modal };
+          this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 200MB !', active: this.call_modal };
         }, 0);
         this.repSpinner = false;
         return;
@@ -1155,7 +1156,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       if (this.certDocSize + parseFloat(this.appfile.size) / 1024 / 1024 > 200) {
         setTimeout(() => {
           this.call_modal = true;
-          this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 50MB !', active: this.call_modal };
+          this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 200MB !', active: this.call_modal };
         }, 0);
         this.appSpinner = false;
         return;
@@ -1206,7 +1207,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       if (this.certDocSize + parseFloat(this.drafile.size) / 1024 / 1024 > 200) {
         setTimeout(() => {
           this.call_modal = true;
-          this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 50MB !', active: this.call_modal };
+          this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 200MB !', active: this.call_modal };
         }, 0);
         this.dragSpinner = false;
         return;
@@ -1257,7 +1258,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       if (this.certDocSize + parseFloat(this.invfile.size) / 1024 / 1024 > 200) {
         setTimeout(() => {
           this.call_modal = true;
-          this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 50MB !', active: this.call_modal };
+          this.data_send = { text: 'Document Size Limit Exceeded,You have total limit upto 200MB !', active: this.call_modal };
         }, 0);
         this.invSpinner = false;
         return;
@@ -1283,7 +1284,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
   certDelete(i: number) {
     if (this.datavalidate(this.certdocumentsArr[i].DOC_REF_NO) != '') {
       this.confirmationService.confirm({
-        message: 'Are you sure that you want to delele this file?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
+        message: 'Are you sure you want to delete this File?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
         accept: () => {
           this.gridDeleteFile(this.certdocumentsArr[i].DOC_REF_NO);
           this.certDocSize = this.certDocSize - parseFloat(this.certdocumentsArr[i].DOC_SIZE)
@@ -1299,7 +1300,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
   repDelete(i: number) {
     if (this.datavalidate(this.repdocumentsArr[i].DOC_REF_NO) != '') {
       this.confirmationService.confirm({
-        message: 'Are you sure that you want to delele this file?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
+        message: 'Are you sure you want to delete this File?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
         accept: () => {
           this.gridDeleteFile(this.repdocumentsArr[i].DOC_REF_NO);
           this.certDocSize = this.certDocSize - parseFloat(this.repdocumentsArr[i].DOC_SIZE)
@@ -1315,7 +1316,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
   appDelete(i: number) {
     if (this.datavalidate(this.appdocumentsArr[i].DOC_REF_NO) != '') {
       this.confirmationService.confirm({
-        message: 'Are you sure that you want to delele this file?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
+        message: 'Are you sure you want to delete this File?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
         accept: () => {
           this.gridDeleteFile(this.appdocumentsArr[i].DOC_REF_NO);
           this.certDocSize = this.certDocSize - parseFloat(this.appdocumentsArr[i].DOC_SIZE)
@@ -1331,7 +1332,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
   draDelete(i: number) {
     if (this.datavalidate(this.dradocumentsArr[i].DOC_REF_NO) != '') {
       this.confirmationService.confirm({
-        message: 'Are you sure that you want to delele this file?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
+        message: 'Are you sure you want to delete this File?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
         accept: () => {
           this.gridDeleteFile(this.dradocumentsArr[i].DOC_REF_NO);
           this.certDocSize = this.certDocSize - parseFloat(this.dradocumentsArr[i].DOC_SIZE)
@@ -1347,7 +1348,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
   invDelete(i: number) {
     if (this.datavalidate(this.invdocumentsArr[i].DOC_REF_NO) != '') {
       this.confirmationService.confirm({
-        message: 'Are you sure that you want to delele this file?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
+        message: 'Are you sure you want to delete this File?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
         accept: () => {
           this.gridDeleteFile(this.invdocumentsArr[i].DOC_REF_NO);
           this.certDocSize = this.certDocSize - parseFloat(this.invdocumentsArr[i].DOC_SIZE)
@@ -1647,6 +1648,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
   saveType: string = '';
   isSaveSubm: boolean = false;
   DOCUMENT_NO: string = '';
+  savemsg:string = '';
   async saveDetails(arg: string) {
     this.saveType = arg;
     let dataObj = {};
@@ -1682,9 +1684,20 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
         return;
       }
     }
+
+    if (this.isRemarksValid(7) && this.datavalidate(this.taskId) != '' && this.saveType == 'submit') {
+      setTimeout(() => {
+        this.call_modal = true;
+        this.data_send = { text: 'Please enter remarks', active: this.call_modal };
+      }, 0);
+      return;
+    } else {
+      this.remarkSubmit = false;
+    }
+
     if (arg == 'submit' || arg == 'clone') {
-      var msg = arg == 'submit' ? ' Are you sure you want to submit the data?' :
-        arg == 'clone' ? ' Are you sure you want to clone the data?' : ''
+      var msg = arg == 'submit' ? ' Are you sure you want to submit this data?' :
+        arg == 'clone' ? ' Are you sure you want to Create New Request' : ''
       this.confirmationService.confirm({
         message: msg, header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
         accept: () => {
@@ -1760,6 +1773,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
               this.HR_REF_NO = res[0].HR_REF_NO
               let obj = { 'HR_REF_NO': this.HR_REF_NO, 'actRole': this.actRole, 'actStage': this.actStage }
               this.service.sharingData(obj, 'HR_REF_NO');
+              this.service.SaveUpdateHRNo.next(this.HR_REF_NO);
               this.service.createPageEvents.next('');
               this.REQUEST_NO = res[0].REQUEST_NO
               this.newREQUEST_NO = res[0].REQUEST_NO;
@@ -1777,6 +1791,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       });
     } else if (arg == 'save') {
       if (this.datavalidate(this.HR_REF_NO) != '') {
+        this.savemsg = 'Request Updated Successfully';
         dataObj = {
           tuple: {
             old: {
@@ -1809,6 +1824,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
       else {
+        this.savemsg = 'New Request Created Successfully';
         dataObj = {
           tuple: {
             new: {
@@ -1846,6 +1862,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
       this.service.invokeService("UpdateFdHlRequestDetails", dataObj, this.namespace, true, false)
         .then((res: any) => {
           this.HR_REF_NO = res[0].HR_REF_NO
+          this.service.SaveUpdateHRNo.next( this.HR_REF_NO);
           let obj = { 'HR_REF_NO': this.HR_REF_NO, 'actRole': this.actRole, 'actStage': this.actStage }
           this.service.sharingData(obj, 'HR_REF_NO');
           this.service.createPageEvents.next('');
@@ -1860,6 +1877,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
           })
     }
   }
+
   saveFooter() {
     this.call_modal = false;
     var dataObj = {
@@ -1965,12 +1983,10 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
             this.completeTask(7, this.openAs, '');
           }
         } else if (this.saveType == 'save') {
-          let msg: string;
-          msg = this.datavalidate(this.openAs) == '' ? 'New Request Created Successfully' : 'Request Updated Successfully'
           setTimeout(() => {
             let modal_from = this.saveType == 'save' ? '' : this.saveType == 'submit' ? 'task' : ''
             this.call_modal = true;
-            this.data_send = { text: msg, 'text1': `Request ID`, 'text2': `${this.REQUEST_NO}`, active: this.call_modal, from: modal_from };
+            this.data_send = { text: this.savemsg, 'text1': `Request ID`, 'text2': `${this.REQUEST_NO}`, active: this.call_modal, from: modal_from };
           }, 0);
         }
         if (res) {
@@ -1987,7 +2003,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
   deleteFile() {
     this.call_modal = false;
     this.confirmationService.confirm({
-      message: 'Are you sure that you want to delele this file?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
+      message: 'Are you sure  you want to delete this File?', header: 'Confirmation', icon: 'pi pi-exclamation-triangle',
       accept: () => {
         for (let i = 0; i < this.checkedRows.length; i++) {
           this.initValue = this.initValue - parseFloat(this.checkedRows[i].DOC_SIZE)
@@ -2029,7 +2045,8 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   isRemarksValid(arg: number) {
-    if (arg == 0 && this.remarks == '' || arg == 3 && this.remarks == '' || arg == 4 && this.remarks == '' || arg == 7 && this.remarks == '') {
+    if (arg == 0 && this.datavalidate(this.remarks) == '' || arg == 3 && this.datavalidate(this.remarks) == '' || 
+    arg == 4 && this.datavalidate(this.remarks) == '' || arg == 7 && this.datavalidate(this.remarks) == '') {
       this.remarkSubmit = true;
       return true;
     } else {
@@ -2079,6 +2096,26 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
 
     else {
 
+    }
+  }
+
+  variantNamesStr(){
+    let tempArr:any = [];
+    this.nameArrStr = '';
+    if (this.emisionComplaince == 'TR4' || this.emisionComplaince == 'CE4') {
+      this.variantsArr.forEach((data:any)=>{
+        if(data.HRV_REF_NO !=''){
+          tempArr.push(data.LOV_DESC);
+        }
+       })
+       this.nameArrStr = tempArr.toString();
+    } else if (this.emisionComplaince == 'B3A' || this.emisionComplaince == 'CE3'){
+      this.variantsArr.forEach((data:any)=>{
+        if(data.HRV_REF_NO !=''){
+          tempArr.push(data.LOV_DESC);
+        }
+       })
+       this.nameArrStr = tempArr.toString();
     }
   }
 
@@ -2136,7 +2173,7 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       // this.idArr.push(obj.VARIANT)
       this.nameArr.push(obj.VARIANT)
-      let temp = { HRV_REF_NO: obj.HRV_REF_N, LOV_DESC: obj.VARIANT, Table12Arr: [], Measurment: [], Mode: [{ innerArr: [] }] }
+      let temp = { HRV_REF_NO: obj.HRV_REF_NO, LOV_DESC: obj.VARIANT, Table12Arr: [], Measurment: [], Mode: [{ innerArr: [] }] }
       let temp1 = { HRV_REF_NO: obj.HRV_REF_NO, LOV_DESC: obj.VARIANT, Table12Arr1: [], Measurment: [], Mode: [{ innerArr: [] }] }
       this.variantsArr.push(temp)
       this.variantsArr1.push(temp1)
@@ -2177,20 +2214,31 @@ export class CreateNewRequestComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   callReqManagement(arg: string) {
-    // table4g
-    let params = { HR_REF_NO: arg, REPORT_REF_ID: 3 };
-    this.service.invokeService("GetFdHlRequestManagement", params, this.namespace, true, false)
-      .then((res: any) => {
-        this.Table12Arr = res;
-        this.getFdHlRequestManagement();
-      })
-    // chapter2
-    let params1 = { HR_REF_NO: arg, REPORT_REF_ID: 4 };
-    this.service.invokeService("GetFdHlRequestManagement", params1, this.namespace, true, false)
-      .then((res: any) => {
-        this.chapter2Arr = res;
-        this.getFdHlRequestManagement1();
-      })
+    if (this.emisionComplaince == 'TR4' || this.emisionComplaince == 'CE4') {
+      // table4g
+      let addParam = { HR_REF_NO: arg, REPORT_REF_ID: 3, atcStage: this.actStage };
+      this.service.invokeService("GetFdHlAdditionalAttributes", addParam, this.namespace, true, false)
+        .then((res: any) => {
+          let params = { HR_REF_NO: arg, REPORT_REF_ID: 3 };
+          this.service.invokeService("GetFdHlRequestManagement", params, this.namespace, true, false)
+            .then((res: any) => {
+              this.Table12Arr = res;
+              this.getFdHlRequestManagement();
+            })
+        })
+    } else if (this.emisionComplaince == 'B3A' || this.emisionComplaince == 'CE3') {
+      // chapter2
+      let addParam1 = { HR_REF_NO: arg, REPORT_REF_ID: 4, atcStage: this.actStage };
+      this.service.invokeService("GetFdHlAdditionalAttributes", addParam1, this.namespace, true, false)
+        .then((res: any) => {
+          let params1 = { HR_REF_NO: arg, REPORT_REF_ID: 4 };
+          this.service.invokeService("GetFdHlRequestManagement", params1, this.namespace, true, false)
+            .then((res: any) => {
+              this.chapter2Arr = res;
+              this.getFdHlRequestManagement1();
+            })
+        })
+    }
   }
 
   Table12EmptyArr = [];

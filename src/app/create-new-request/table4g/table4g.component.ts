@@ -67,7 +67,7 @@ export class Table4gComponent implements OnInit, OnChanges, OnDestroy {
         let chng = changes[propName];
         this.variantsArr = chng.currentValue;
         // this.getFdHlRequestManagement();
-        this.getMesurment();
+        // this.getMesurment();
         this.getMode();
       }
     }
@@ -372,9 +372,10 @@ export class Table4gComponent implements OnInit, OnChanges, OnDestroy {
         accept: () => {
           this.service.invokeService("UpdateFdHlRequestModes", paramsAll, this.namespace, true, false)
             .then((res: any) => {
-              this.variantsArr[i1].Mode.forEach((obj: any, i2: number) => {
-                obj.innerArr.splice(i, 1)
-              })
+              // this.variantsArr[i1].Mode.forEach((obj: any, i2: number) => {
+              //   obj.innerArr.splice(i, 1)
+              // })
+              this.getMode();
             })
         },
         reject: () => { }
@@ -398,7 +399,7 @@ export class Table4gComponent implements OnInit, OnChanges, OnDestroy {
   deleteTable(i1: number, i: number, obj: any) {
     let dataObj = {};
     let ParamTuple: {}[] = [];
-    if (this.variantsArr[i1].Mode[i].innerArr[0].HRMD_REF_NO == '') {
+    if (this.datavalidate(this.variantsArr[i1].Mode[i].innerArr[0].HRMD_REF_NO) == '') {
       this.variantsArr[i1].Mode.splice(i, 1)
     } else {
       this.variantsArr[i1].Mode[i].innerArr.forEach((obj: any, i2: number) => {
@@ -417,7 +418,8 @@ export class Table4gComponent implements OnInit, OnChanges, OnDestroy {
         accept: () => {
           this.service.invokeService("UpdateFdHlRequestModes", paramsAll, this.namespace, true, false)
             .then((res: any) => {
-              this.variantsArr[i1].Mode.splice(i, 1)
+              // this.variantsArr[i1].Mode.splice(i, 1)
+              this.getMode();
             })
         },
         reject: () => { }
@@ -467,43 +469,44 @@ export class Table4gComponent implements OnInit, OnChanges, OnDestroy {
     var paramsAll = { 'tuple': ParamTuple };
     this.service.invokeService("UpdateFdHlRequestMeasurements", paramsAll, this.namespace, true, false)
       .then((res: any) => {
-        this.getMesurment();
+        // this.getMesurment();
       })
   }
-  getMesurment() {
-    let obj = {
-      HR_REF_NO: this.HR_REF_NO,
-      REPORT_REF_ID: 3
-    }
-    this.service.invokeService("GetFdHlRequestMeasurements", obj, this.namespace, true, false)
-      .then((res: any) => {
-        if (res.length == 0) {
-          this.variantsArr.forEach((d: any) => {
-            d.Measurment = [{ HRMM_REF_NO: '', ENGINE_SPEED: '', GROSS_POWER: '' }]
-          })
-        } else {
-          this.variantsArr.forEach((d: any) => {
-            d.Measurment = [];
-            if (d.HRV_REF_NO == '') {
-              d.Measurment = [{ HRMM_REF_NO: '', ENGINE_SPEED: '', GROSS_POWER: '' }]
-            } else {
-              res.forEach((d1: any) => {
-                if (d.HRV_REF_NO == d1.HRV_REF_NO) {
-                  d.Measurment.push(d1)
-                  // } else {
-                  //   d.Measurment = [{ HRMM_REF_NO: '', ENGINE_SPEED: '', GROSS_POWER: '' }, { HRMM_REF_NO: '', ENGINE_SPEED: '', GROSS_POWER: '' }]
-                }
-              })
-            }
-          })
-        }
-        this.variantsArr.forEach((d: any) => {
-          if (d.Measurment.length == 0) {
-            d.Measurment = [{ HRMM_REF_NO: '', ENGINE_SPEED: '', GROSS_POWER: '' }]
-          }
-        })
-      })
-  }
+  // getMesurment() {
+  //   let obj = {
+  //     HR_REF_NO: this.HR_REF_NO,
+  //     REPORT_REF_ID: 3
+  //   }
+  //   this.service.invokeService("GetFdHlRequestMeasurements", obj, this.namespace, true, false)
+  //     .then((res: any) => {
+  //       if (res.length == 0) {
+  //         this.variantsArr.forEach((d: any) => {
+  //           d.Measurment = [{ HRMM_REF_NO: '', ENGINE_SPEED: '', GROSS_POWER: '' }]
+  //         })
+  //       } else {
+  //         this.variantsArr.forEach((d: any) => {
+  //           d.Measurment = [];
+  //           if (d.HRV_REF_NO == '') {
+  //             d.Measurment = [{ HRMM_REF_NO: '', ENGINE_SPEED: '', GROSS_POWER: '' }]
+  //           } else {
+  //             res.forEach((d1: any) => {
+  //               if (d.HRV_REF_NO == d1.HRV_REF_NO) {
+  //                 d.Measurment.push(d1)
+  //                 // } else {
+  //                 //   d.Measurment = [{ HRMM_REF_NO: '', ENGINE_SPEED: '', GROSS_POWER: '' }, { HRMM_REF_NO: '', ENGINE_SPEED: '', GROSS_POWER: '' }]
+  //               }
+  //             })
+  //           }
+  //         })
+  //       }
+  //       this.variantsArr.forEach((d: any) => {
+  //         if (d.Measurment.length == 0) {
+  //           d.Measurment = [{ HRMM_REF_NO: '', ENGINE_SPEED: '', GROSS_POWER: '' }]
+  //         }
+  //       })
+  //     })
+  // }
+
   getMode() {
     let obj = {
       HR_REF_NO: this.HR_REF_NO,
@@ -674,7 +677,7 @@ export class Table4gComponent implements OnInit, OnChanges, OnDestroy {
       var paramsAll = { 'tuple': ParamTuple };
       this.service.invokeService("UpdateFdHlRequestMeasurements", paramsAll, this.namespace, true, false)
         .then((res: any) => {
-          this.getMesurment();
+          // this.getMesurment();
           resolve('Res success from table4g');
         }).catch((e) => {
           reject(e);

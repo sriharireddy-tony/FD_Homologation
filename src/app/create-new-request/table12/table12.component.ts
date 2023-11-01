@@ -26,7 +26,7 @@ export class Table12Component implements OnInit, OnDestroy {
   engineVarient: any = []
   call_modal: boolean = false;
   data_send = {}
-  form = {
+  form:any = {
     MANUFACTURER: '',
     MODEL_VARIANTS: '',
     CMVR_CERTIFICATE_NO: '',
@@ -306,7 +306,7 @@ export class Table12Component implements OnInit, OnDestroy {
       var param = { HR_REF_NO: this.HR_REF_NO };
       await this.service.invokeService("GetFDHLTable12Details", param, this.namespace, true, false)
         .then((res: any) => {
-          this.TAB12_REF_NO = res[0].TAB12_REF_NO
+          this.TAB12_REF_NO = res[0]?.TAB12_REF_NO
           this.form = {
             MANUFACTURER: '',
             MODEL_VARIANTS: res[0].MODEL_VARIANTS,

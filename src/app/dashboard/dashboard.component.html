@@ -37,7 +37,7 @@
         </div>
     </div>
     <div class="row mx-3 mt-3">
-        <div class="col-lg-3">
+        <div class="col-lg-3 col-md-3">
             <h6>Stage</h6>
             <select class="form-select" [(ngModel)]="searchObj.stage">
                 <option value=''>Select Stage</option>
@@ -68,6 +68,7 @@
                 [(ngModel)]="searchObj.toDate" (onSelect)="dateValidation()"></p-calendar>
         </div>
     </div>
+   
     <div class="row mx-3 mt-4">
         <div class="col-lg-3">
             <h6>Select Location</h6>
@@ -87,11 +88,11 @@
                     [(ngModel)]="searchObj.type"> Amendment
             </div>
         </div>
-        <div class="col-lg-3">
+        <!-- <div class="col-lg-3">
 
 
-        </div>
-        <div class="col-lg-3 mt-2">
+        </div> -->
+        <div class="col-lg-6 mt-2">
             <button class="btnrounded-0 float-end mx-1" type="button"
                 style="border:2px solid rgb(1, 64, 82);background-color:white;padding: 6px 20px 6px 20px;color:rgb(1, 64, 82)"
                 (click)="clear()">
@@ -168,7 +169,7 @@
                 <h5 style="margin-left:20px;" class="mb-0">Workflow History</h5>
                 <button style="padding: 0px 15px;font-size:25px;border-radius:10px;" type="button"
                     class="popup-close justify-content-end" (click)="closeWorkFlowDoc()">X</button>
-            </div>
+            </div> 
             <div class="modal-body shadow">
                 <table class="table table-bordered">
                     <thead>
@@ -195,9 +196,9 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+         </div>
     </div>
-</div>
+</div> 
 
 <div class="common_modal" *ngIf="call_modal">
     <app-common-modal [data_display]="data_send"></app-common-modal>

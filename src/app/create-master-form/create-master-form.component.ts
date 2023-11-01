@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DatePipe, Location } from '@angular/common';
 import { Services } from 'src/app/services/services';
 import { AppComponent } from 'src/app/app.component';
@@ -15,7 +15,7 @@ declare var $: any
   templateUrl: './create-master-form.component.html',
   styleUrls: ['./create-master-form.component.css']
 })
-export class CreateMasterFormComponent implements OnInit {
+export class CreateMasterFormComponent implements OnInit,OnDestroy {
 
   namespace: string = "http://schemas.cordys.com/FD_HL_WSPackage";
   ATTR_REF_ID: string = '';
@@ -58,8 +58,8 @@ export class CreateMasterFormComponent implements OnInit {
   engineModelForm = this.fb.group({
     ATTR_NAME: ['',Validators.required],
     ATTR_DESC: ['',Validators.required],
-    ATTR_CHARACTERISTICS: [null,Validators.required],
-    DOUMENT_NAME: [null,Validators.required],
+    ATTR_CHARACTERISTICS: ['',Validators.required],
+    DOUMENT_NAME: ['',Validators.required],
     MANDATORY: ['',Validators.required],
     VISIBLE: ['',Validators.required],
     Highlite: ['',Validators.required],
